@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Ryan Posener</Authors>
+    <Product>Domain Driven Core</Product>
+    <Description>A Core Library to build DDD-style projects from which are backed by a SQL Database.  This library provides the core building-blocks for Entities, ValueObjects, and Specifications.  It also provides a Scoped Unit-of-work, and provides repository implementation for any class that implements IAggregateRoot to which Commands and Specifications can be executed.</Description>
+    <PackageProjectUrl>https://github.com/rposener/DDCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rposener/DDCore</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>DDD .net core</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
