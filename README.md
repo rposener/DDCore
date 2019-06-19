@@ -1,0 +1,2 @@
+# DDCore
+Domain Driven Core
