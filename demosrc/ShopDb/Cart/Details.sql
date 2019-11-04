@@ -1,0 +1,6 @@
+﻿CREATE TABLE [Cart].[Details]
+(
+	[CartId] INT IDENTITY NOT NULL PRIMARY KEY, 
+    [Created] DATETIME2 NOT NULL DEFAULT (SYSUTCDATETIME()), 
+    [CartIdentifier] NVARCHAR(50) NOT NULL
+)

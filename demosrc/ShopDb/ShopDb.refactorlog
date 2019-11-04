@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="bfdb4a77-dba7-43fd-9cab-eda3a0f29777" ChangeDateTime="06/20/2019 12:15:41">
+    <Property Name="ElementName" Value="[Product].[Rating].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Product].[Rating]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ProductId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="507f10f3-9848-4cc0-834e-c854b9e8678b" ChangeDateTime="06/20/2019 12:16:53">
+    <Property Name="ElementName" Value="[Cart].[Details].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Cart].[Details]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CartId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c48755a5-9f67-4144-8e5c-01a312533205" ChangeDateTime="06/20/2019 12:18:22">
+    <Property Name="ElementName" Value="[Cart].[Details].[CookieValue]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Cart].[Details]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CartIdentifier" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e67b9664-e303-45cc-a258-49a69aab3fac" ChangeDateTime="06/20/2019 12:19:17">
+    <Property Name="ElementName" Value="[Cart].[Contents].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Cart].[Contents]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CartId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="74c92e2b-1f1c-4a14-bac0-45e0242dd63a" ChangeDateTime="06/20/2019 15:48:05">
+    <Property Name="ElementName" Value="[Product].[Reviews].[Review]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Product].[Reviews]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ReviewText" />
+  </Operation>
+</Operations>
