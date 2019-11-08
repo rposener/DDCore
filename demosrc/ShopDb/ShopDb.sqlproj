@@ -59,10 +59,6 @@
     <Folder Include="Cart" />
     <Folder Include="Product" />
     <Folder Include="Schemas" />
-    <Folder Include="Product\StoredProcs" />
-    <Folder Include="Cart\StoredProcs" />
-    <Folder Include="ProductSummary" />
-    <Folder Include="ProductSummary\StoredProcs" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Product.sql" />
@@ -71,16 +67,7 @@
     <Build Include="Product\Reviews.sql" />
     <Build Include="Cart\Details.sql" />
     <Build Include="Cart\Contents.sql" />
-    <Build Include="Cart\StoredProcs\Lookup.sql" />
-    <Build Include="Product\StoredProcs\Review.sql" />
-    <Build Include="Cart\StoredProcs\AddItem.sql" />
-    <Build Include="Cart\StoredProcs\RemoveItem.sql" />
-    <Build Include="Cart\StoredProcs\SetQuantity.sql" />
-    <Build Include="Schemas\ProductSummary.sql" />
-    <Build Include="Product\StoredProcs\Lookup.sql" />
-    <Build Include="ProductSummary\StoredProcs\List.sql" />
-    <Build Include="ProductSummary\StoredProcs\Search.sql" />
-    <Build Include="Product\StoredProcs\GetReviews.sql" />
+    <Build Include="Product\Summaries.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ShopDb.refactorlog" />
