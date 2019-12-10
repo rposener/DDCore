@@ -9,10 +9,9 @@ namespace ShopData.Configuration
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable("Details", "Product");
-            builder.UsePropertyAccessMode(PropertyAccessMode.Field);
-            builder.Property("_productId").HasColumnName("ProductId").UseIdentityColumn();
+            builder.Property("_productId").HasColumnName("ProductId").UseIdentityColumn().UseHiLo();
             builder.HasKey("_productId");
-            builder.HasMany<Review>("_reviews");
+            builder.OwnsMany<Review>("_reviews");
             builder.Property("_name").HasColumnName("Name");
             builder.Property("_description").HasColumnName("Description");
             builder.Property("_price").HasColumnName("Price");

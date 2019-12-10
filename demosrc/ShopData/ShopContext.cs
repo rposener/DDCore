@@ -21,9 +21,10 @@ namespace ShopData
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductSummaryConfiguration());
-            modelBuilder.ApplyConfiguration(new ReviewConfiguration());
+            modelBuilder
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .UseHiLo()
+                .ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly);
         }
     }
 }
