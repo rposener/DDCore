@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace ShopData.Catalog
 {
-    public class GetProductList
+    public class ProductSummaryQuery
     {
         public enum OrderBy { NameAsc, NameDesc, RatingAsc, RatingDesc, PriceAsc, PriceDesc };
 
         public readonly int PageSize;
         public readonly OrderBy Order;
 
-        public GetProductList(int pageSize = 20, OrderBy orderBy = OrderBy.RatingDesc)
+        public ProductSummaryQuery(int pageSize = 20, OrderBy orderBy = OrderBy.RatingDesc)
         {
             PageSize = pageSize;
             Order = orderBy;           

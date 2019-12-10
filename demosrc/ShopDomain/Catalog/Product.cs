@@ -28,20 +28,41 @@ namespace ShopDomain.Catalog
             _reviews = new List<Review>();
         }
 
-        public Result<Product> Validate(string name, string description, decimal price)
+        public Result Validate(string name, string description, decimal price)
+        {
+            List<Result> results = new List<Result>();
+            results.Add(ValidateName(name));
+            results.Add(ValidateDescription(description));
+            results.Add(ValidatePrice(price));
+            
+            return Result.Combine(results);
+        }
+
+        public Result ValidateName(string name)
         {
             if (String.IsNullOrEmpty(name))
-                return Result<Product>.Failure("Product name cannot be empty.");
+                return Result.Failure("Product name cannot be empty.");
             if (name.Length > NAME_LENGTH)
-                return Result<Product>.Failure($"Product name must not be longer than {NAME_LENGTH} characters.");
+                return Result.Failure($"Product name must not be longer than {NAME_LENGTH} characters.");
 
+            return Result.Success();
+        }
+
+        public Result ValidateDescription(string description)
+        { 
             if (description.Length > NAME_LENGTH)
-                return Result<Product>.Failure($"Product description must not be longer than {DESCRIPTION_LENGTH} characters.");
+                return Result.Failure($"Product description must not be longer than {DESCRIPTION_LENGTH} characters.");
 
+            return Result.Success();
+        }
+
+
+        public Result ValidatePrice(decimal price)
+        {
             if (price < 0)
-                return Result<Product>.Failure("Product price cannot be negative.");
+                return Result.Failure("Product price cannot be negative.");
 
-            return Result<Product>.Success();
+            return Result.Success();
         }
 
         public Result<Product> Create(string name, string description, decimal price)
@@ -49,10 +70,10 @@ namespace ShopDomain.Catalog
             name = (name ?? String.Empty).Trim();
             description = (description ?? String.Empty).Trim();
 
-            // VAlidate
+            // Validate on Create
             var validationResult = Validate(name, description, price);
             if (validationResult.IsFailure)
-                return validationResult;
+                return Result<Product>.Failure(validationResult.Error);
 
             return Result<Product>.Success(new Product(name, description, price));
         }

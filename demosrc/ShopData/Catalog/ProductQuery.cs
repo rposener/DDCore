@@ -8,21 +8,20 @@ using System.Threading.Tasks;
 
 namespace ShopData.Catalog
 {
-    public class GetProductsQuery
+    public class ProductQuery
     {
-        public string Search { get; private set; }
+        public readonly int ProductId;
 
-        public GetProductsQuery(string search)
+        public ProductQuery(int productId)
         {
-            Search = search;
+            ProductId = productId;
         }
-
-        public async Task<IReadOnlyList<Product>> ExecuteAsync(ShopContext context)
+        public async Task<Product> ExecuteAsync(ShopContext context)
         {
             var query = from p in context.Products.Include("_reviews")
-                        where p.Name.Contains(Search)
+                        where p.ProductId == ProductId
                         select p;
-            return await query.ToListAsync();
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
