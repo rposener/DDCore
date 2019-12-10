@@ -21,6 +21,7 @@ namespace ShopData.Catalog
             Search = search;
             Order = order;
         }
+
         private IOrderedQueryable<Product> ApplyOrdering(IQueryable<Product> source)
         {
             switch (Order)

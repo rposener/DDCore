@@ -14,7 +14,7 @@ namespace ShopData.Configuration
         {
             builder.ToTable("Details", "Product");
             builder.HasKey("_productId");
-            builder.Property("_productId").HasColumnName("ProductId").UseIdentityColumn().UseHiLo();
+            builder.Property("_productId").HasColumnName("ProductId").UseIdentityColumn();
             builder.Property("_name").HasColumnName("Name");
             builder.Property("_description").HasColumnName("Description");
             builder.Property("_price").HasColumnName("Price");
@@ -25,7 +25,7 @@ namespace ShopData.Configuration
                 pr.ToTable("Review", "Product");
                 pr.WithOwner().HasForeignKey("ProductId");
                 pr.HasKey("_reviewId");
-                pr.Property("_reviewId").HasColumnName("ReviewId").UseIdentityColumn().UseHiLo();
+                pr.Property("_reviewId").HasColumnName("ReviewId").UseIdentityColumn();
                 pr.Property("_reviewer").HasColumnName("Reviewer");
                 pr.Property("_reviewDate").HasColumnName("ReviewDate");
                 pr.Property("_reviewText").HasColumnName("ReviewText");

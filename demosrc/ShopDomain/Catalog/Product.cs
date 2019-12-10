@@ -13,13 +13,23 @@ namespace ShopDomain.Catalog
         const int NAME_LENGTH = 128;
         const int DESCRIPTION_LENGTH = 512;
         
+        // EF Backing Field for Value Object
         private List<Review> _reviews;
 
+        /// <summary>
+        /// Private Constructor for EF Core
+        /// </summary>
         private Product()
         {
 
         }
 
+        /// <summary>
+        /// Private Constructor use <seealso cref="Create(string, string, decimal)"/> Factory Method
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="price"></param>
         private Product(string name, string description, decimal price)
         {
             _name = name ?? throw new ArgumentNullException(nameof(name));
@@ -28,17 +38,18 @@ namespace ShopDomain.Catalog
             _reviews = new List<Review>();
         }
 
-        public Result Validate(string name, string description, decimal price)
+        #region Validation Methods
+        public static Result Validate(string name, string description, decimal price)
         {
             List<Result> results = new List<Result>();
             results.Add(ValidateName(name));
             results.Add(ValidateDescription(description));
             results.Add(ValidatePrice(price));
-            
+
             return Result.Combine(results);
         }
 
-        public Result ValidateName(string name)
+        public static Result ValidateName(string name)
         {
             if (String.IsNullOrEmpty(name))
                 return Result.Failure("Product name cannot be empty.");
@@ -48,8 +59,8 @@ namespace ShopDomain.Catalog
             return Result.Success();
         }
 
-        public Result ValidateDescription(string description)
-        { 
+        public static Result ValidateDescription(string description)
+        {
             if (description.Length > NAME_LENGTH)
                 return Result.Failure($"Product description must not be longer than {DESCRIPTION_LENGTH} characters.");
 
@@ -57,7 +68,7 @@ namespace ShopDomain.Catalog
         }
 
 
-        public Result ValidatePrice(decimal price)
+        public static Result ValidatePrice(decimal price)
         {
             if (price < 0)
                 return Result.Failure("Product price cannot be negative.");
@@ -65,7 +76,18 @@ namespace ShopDomain.Catalog
             return Result.Success();
         }
 
-        public Result<Product> Create(string name, string description, decimal price)
+        #endregion Validation Methods
+
+        #region Factory Methods
+
+        /// <summary>
+        /// Creates a new <see cref="Product"></see>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="price"></param>
+        /// <returns></returns>
+        public static Result<Product> Create(string name, string description, decimal price)
         {
             name = (name ?? String.Empty).Trim();
             description = (description ?? String.Empty).Trim();
@@ -78,8 +100,14 @@ namespace ShopDomain.Catalog
             return Result<Product>.Success(new Product(name, description, price));
         }
 
+        #endregion Factory Methods
 
+        /// <summary>
+        /// Public Access to the Reviews Collection for this Product
+        /// </summary>
         public IReadOnlyCollection<Review> Reviews => _reviews;
+
+        #region Member Methods
 
         public void ChangeName(string name)
         {
@@ -112,6 +140,12 @@ namespace ShopDomain.Catalog
             }
         }
 
+        #endregion Member Methods
+
+        /// <summary>
+        /// Fields that Determine this Entities Identity
+        /// </summary>
+        /// <returns></returns>
         protected override IEnumerable<IComparable> GetIdentityComponents()
         {
             yield return ProductId;

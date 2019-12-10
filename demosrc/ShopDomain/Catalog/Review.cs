@@ -6,12 +6,16 @@ namespace ShopDomain.Catalog
 {
     public class Review : ValueObject
     {
+        // EF Core Backing Fields
         private int _reviewId;
         private string _reviewer;
         private string _reviewText;
         private DateTime _reviewDate;
         private int _rating;
 
+        /// <summary>
+        /// Private Constructor for EF Core Materialization
+        /// </summary>
         private Review()
         {
 
@@ -50,6 +54,10 @@ namespace ShopDomain.Catalog
             get { return _rating; }
         }
 
+        /// <summary>
+        /// Returns the fields that Identify this Values Object
+        /// </summary>
+        /// <returns></returns>
         protected override IEnumerable<IComparable> GetEqualityComponents()
         {
             yield return _reviewer;

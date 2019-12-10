@@ -12,13 +12,10 @@ namespace ShopData
 
         }
 
-        public DbSet<Product> Products { get; set; }
-
-        public DbSet<ProductSummary> ProductSummaries { get; set; }
-
-        public DbSet<Review> Reviews { get; set; }
-
-
+        /// <summary>
+        /// Configuration for the Context
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
@@ -26,5 +23,12 @@ namespace ShopData
                 .UseHiLo()
                 .ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly);
         }
+
+        /// <summary>
+        /// Aggregate Roots Go Here 
+        /// note: Owned Value Types do not appear here
+        /// </summary>
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductSummary> ProductSummaries { get; set; }
     }
 }

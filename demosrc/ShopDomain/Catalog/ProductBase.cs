@@ -8,6 +8,7 @@ namespace ShopDomain.Catalog
 {
     public abstract class ProductBase : EntityObject
     {
+        // EF Core Backing Fields
         protected int _productId;
         protected string _name;
         protected string _description;
