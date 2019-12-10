@@ -10,7 +10,7 @@ namespace ShopData.Catalog
 {
     public class GetProductsQuery
     {
-        public string Search { get; set; }
+        public string Search { get; private set; }
 
         public GetProductsQuery(string search)
         {

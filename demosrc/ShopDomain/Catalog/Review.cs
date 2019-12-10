@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShopDomain.Catalog
 {
-    public class Review : EntityObject
+    public class Review : ValueObject
     {
         private int _reviewId;
         private string _reviewer;
@@ -50,7 +50,7 @@ namespace ShopDomain.Catalog
             get { return _rating; }
         }
 
-        protected override IEnumerable<IComparable> GetIdentityComponents()
+        protected override IEnumerable<IComparable> GetEqualityComponents()
         {
             yield return _reviewer;
             yield return _reviewText;
