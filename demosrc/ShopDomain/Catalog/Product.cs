@@ -1,11 +1,9 @@
-﻿using DDCore;
-using DDCore.Domain;
+﻿using DDCore.Domain;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace ShopDomain
+namespace ShopDomain.Catalog
 {
     public class Product : EntityObject, IAggregateRoot
     {
@@ -14,16 +12,16 @@ namespace ShopDomain
         const int DESCRIPTION_LENGTH = 512;
 
         // EF Backing Field for Value Object
-        protected int _productId;
-        protected string _name;
-        protected string _description;
-        protected decimal _price;
-        private HashSet<Review> _reviews;
+        private int _productId;
+        private string _name;
+        private string _description;
+        private decimal _price;
+        protected virtual IList<Review> _reviews { get; set; }
 
         /// <summary>
         /// Private Constructor for EF Core
         /// </summary>
-        private Product()
+        protected Product()
         {
 
         }
@@ -129,7 +127,7 @@ namespace ShopDomain
         /// <summary>
         /// Public Access to the Reviews Collection for this Product
         /// </summary>
-        public IReadOnlyCollection<Review> Reviews => _reviews;
+        public IReadOnlyList<Review> Reviews => _reviews.ToArray();
 
         #region Member Methods
 

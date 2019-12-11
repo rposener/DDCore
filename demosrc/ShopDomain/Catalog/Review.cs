@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ShopDomain
+namespace ShopDomain.Catalog
 {
     public class Review : ValueObject
     {
@@ -16,7 +16,7 @@ namespace ShopDomain
         /// <summary>
         /// Private Constructor for EF Core Materialization
         /// </summary>
-        private Review()
+        protected Review()
         {
 
         }
