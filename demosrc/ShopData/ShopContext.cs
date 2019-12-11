@@ -29,6 +29,6 @@ namespace ShopData
         /// note: Owned Value Types do not appear here
         /// </summary>
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductSummary> ProductSummaries { get; set; }
+        public DbSet<ProductSummaryResult> ProductSummaries { get; set; }
     }
 }

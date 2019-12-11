@@ -12,8 +12,4 @@
     <PackageTags>DDD .net core</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Domain\" />
-  </ItemGroup>
-
 </Project>

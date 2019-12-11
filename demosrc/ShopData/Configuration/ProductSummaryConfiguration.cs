@@ -1,15 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShopDomain.Catalog;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShopData.Configuration
 {
-    public class ProductSummaryConfiguration : IEntityTypeConfiguration<ProductSummary>
+    public class ProductSummaryConfiguration : IEntityTypeConfiguration<ProductSummaryResult>
     {
-        public void Configure(EntityTypeBuilder<ProductSummary> builder)
+        public void Configure(EntityTypeBuilder<ProductSummaryResult> builder)
         {
             builder.ToView("Summaries", "Product");
             builder.Property("_productId").HasColumnName("ProductId");

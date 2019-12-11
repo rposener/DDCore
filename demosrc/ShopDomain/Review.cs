@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ShopDomain.Catalog
+namespace ShopDomain
 {
     public class Review : ValueObject
     {

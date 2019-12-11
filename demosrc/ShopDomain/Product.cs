@@ -5,16 +5,20 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace ShopDomain.Catalog
+namespace ShopDomain
 {
-    public class Product : ProductBase, IAggregateRoot
+    public class Product : EntityObject, IAggregateRoot
     {
         const int MAX_REVIEWS = 50;
         const int NAME_LENGTH = 128;
         const int DESCRIPTION_LENGTH = 512;
-        
+
         // EF Backing Field for Value Object
-        private List<Review> _reviews;
+        protected int _productId;
+        protected string _name;
+        protected string _description;
+        protected decimal _price;
+        private HashSet<Review> _reviews;
 
         /// <summary>
         /// Private Constructor for EF Core
@@ -22,6 +26,26 @@ namespace ShopDomain.Catalog
         private Product()
         {
 
+        }
+
+        public int ProductId
+        {
+            get { return _productId; }
+        }
+
+        public virtual string Name
+        {
+            get { return _name; }
+        }
+
+        public string Description
+        {
+            get { return _description; }
+        }
+
+        public decimal Price
+        {
+            get { return _price; }
         }
 
         /// <summary>

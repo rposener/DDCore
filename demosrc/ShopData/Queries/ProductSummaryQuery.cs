@@ -1,28 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DDCore.Data;
+using Microsoft.EntityFrameworkCore;
 using ShopDomain.Catalog;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopData.Catalog
+namespace ShopData
 {
-    public class ProductSummaryQuery
+    public class ProductSummaryQuery : IQuerySpecification<ProductSummaryResult>
     {
         public enum OrderBy { NameAsc, NameDesc, RatingAsc, RatingDesc, PriceAsc, PriceDesc };
+
+        private readonly ShopContext context;
 
         public readonly int PageSize;
         public readonly OrderBy Order;
 
-        public ProductSummaryQuery(int pageSize = 20, OrderBy orderBy = OrderBy.RatingDesc)
+        public int PageNumber { get; set; } = 1;
+
+        public ProductSummaryQuery(ShopContext context, int pageSize = 20, OrderBy orderBy = OrderBy.RatingDesc)
         {
+            this.context = context;
             PageSize = pageSize;
             Order = orderBy;           
         }
 
-        private IOrderedQueryable<ProductSummary> ApplyOrdering(IQueryable<ProductSummary> source)
+        private IOrderedQueryable<ProductSummaryResult> ApplyOrdering(IQueryable<ProductSummaryResult> source)
         {
             switch (Order)
             {
@@ -42,14 +45,14 @@ namespace ShopData.Catalog
             return source.OrderBy(p => p.Rating);
         }
 
-        public async Task<IReadOnlyList<ProductSummary>> ExecuteAsync(ShopContext context, int PageNumber = 1)
+        public async Task<IReadOnlyList<ProductSummaryResult>> ExecuteAsync()
         {
             var skip = PageSize * (PageNumber - 1);
             var query = ApplyOrdering(context.ProductSummaries)
                 .Skip(skip)
                 .Take(PageSize);
 
-            return await query.ToListAsync();
+            return await query.AsNoTracking().ToListAsync();
         }
 
     }
