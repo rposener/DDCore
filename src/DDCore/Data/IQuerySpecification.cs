@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace DDCore.Data
 {
     /// <summary>
-    /// Decorator Interface to Identify Queries that return some type of <seealso cref="IQueryResult"/>
+    /// Decorator Interface to Identify Queries that return some type of <seealso cref="IQueryResult"/> which is unrelated to any domain objects or logic
     /// Types implementing this Interface should use Constructor Injection and/or Property Setters to configure the Query
     /// </summary>
     public interface IQuerySpecification<T> where T:IQueryResult
@@ -15,7 +15,7 @@ namespace DDCore.Data
         /// <summary>
         /// Executes the <see cref="IQuerySpecification{T}"/>
         /// </summary>
-        /// <returns>readonly list of <typeparamref name="T"/></returns>
-        Task<IReadOnlyList<T>> ExecuteAsync();
+        /// <returns>readonly iterable collection of <typeparamref name="T"/></returns>
+        Task<IEnumerable<T>> ExecuteAsync();
     }
 }

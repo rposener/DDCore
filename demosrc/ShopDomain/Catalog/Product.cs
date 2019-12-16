@@ -1,4 +1,5 @@
 ﻿using DDCore.Domain;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,34 @@ namespace ShopDomain.Catalog
 {
     public class Product : EntityObject, IAggregateRoot
     {
-        const int MAX_REVIEWS = 50;
-        const int NAME_LENGTH = 128;
-        const int DESCRIPTION_LENGTH = 512;
+        public const int MAX_REVIEWS = 50;
+        public const int NAME_LENGTH = 128;
+        public const int DESCRIPTION_LENGTH = 512;
 
         // EF Backing Field for Value Object
         private int _productId;
         private string _name;
         private string _description;
         private decimal _price;
-        protected virtual IList<Review> _reviews { get; set; }
+
+        private ILazyLoader LazyLoader;
+
+        private IList<Review> _reviews;
+        public virtual IList<Review> Reviews
+        {
+            get 
+            {
+                LazyLoader.Load(this, ref _reviews);
+                return _reviews.ToArray();
+            }
+        }
 
         /// <summary>
         /// Private Constructor for EF Core
         /// </summary>
-        protected Product()
+        private Product(ILazyLoader lazyLoader)
         {
-
+            LazyLoader = lazyLoader;
         }
 
         public int ProductId
@@ -123,11 +135,6 @@ namespace ShopDomain.Catalog
         }
 
         #endregion Factory Methods
-
-        /// <summary>
-        /// Public Access to the Reviews Collection for this Product
-        /// </summary>
-        public IReadOnlyList<Review> Reviews => _reviews.ToArray();
 
         #region Member Methods
 

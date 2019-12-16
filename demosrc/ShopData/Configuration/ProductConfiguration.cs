@@ -12,23 +12,24 @@ namespace ShopData.Configuration
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
+           
             builder.ToTable("Details", "Product");
-            builder.HasKey("_productId");
-            builder.Property("_productId").HasColumnName("ProductId").UseIdentityColumn();
-            builder.Property("_name").HasColumnName("Name");
-            builder.Property("_description").HasColumnName("Description");
-            builder.Property("_price").HasColumnName("Price");
+            builder.HasKey(p => p.ProductId);
+            builder.Property(p => p.ProductId).UseIdentityColumn();
+            builder.Property(p => p.Name);
+            builder.Property(p => p.Description);
+            builder.Property(p => p.Price);
 
             // Owned Properties
-            builder.OwnsMany<Review>("_reviews", pr =>
+            builder.OwnsMany<Review>("Reviews", pr =>
             {
                 pr.ToTable("Review", "Product");
                 pr.WithOwner().HasForeignKey("ProductId");
-                pr.HasKey("_reviewId");
-                pr.Property("_reviewId").HasColumnName("ReviewId").UseIdentityColumn();
-                pr.Property("_reviewer").HasColumnName("Reviewer");
-                pr.Property("_reviewDate").HasColumnName("ReviewDate");
-                pr.Property("_reviewText").HasColumnName("ReviewText");
+                pr.HasKey(r => r.ReviewId);
+                pr.Property(r => r.ReviewId).UseIdentityColumn();
+                pr.Property(r => r.Reviewer);
+                pr.Property(r => r.ReviewDate);
+                pr.Property(r => r.ReviewText);
             });
         }
     }
