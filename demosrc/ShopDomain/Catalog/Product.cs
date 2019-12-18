@@ -21,6 +21,7 @@ namespace ShopDomain.Catalog
         private ILazyLoader LazyLoader;
 
         private IList<Review> _reviews;
+
         public virtual IList<Review> Reviews
         {
             get 

@@ -16,7 +16,7 @@ namespace ShopDomain.Catalog
         /// <summary>
         /// Private Constructor for EF Core Materialization
         /// </summary>
-        protected Review()
+        private Review()
         {
 
         }

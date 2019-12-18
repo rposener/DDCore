@@ -21,7 +21,7 @@ namespace ShopData.Configuration
             builder.Property(p => p.Price);
 
             // Owned Properties
-            builder.OwnsMany<Review>("Reviews", pr =>
+            builder.OwnsMany(p => p.Reviews, pr =>
             {
                 pr.ToTable("Review", "Product");
                 pr.WithOwner().HasForeignKey("ProductId");
