@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShopDomain.Catalog;
+using System;
 
 namespace ShopData.Configuration
 {
@@ -28,7 +29,7 @@ namespace ShopData.Configuration
                 pr.HasKey(r => r.ReviewId);
                 pr.Property(r => r.ReviewId).UseIdentityColumn();
                 pr.Property(r => r.Reviewer);
-                pr.Property(r => r.ReviewDate);
+                pr.Property(r => r.ReviewDate).IsValueType();
                 pr.Property(r => r.ReviewText);
             });
         }

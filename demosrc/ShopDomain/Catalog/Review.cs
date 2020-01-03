@@ -1,4 +1,5 @@
 ﻿using DDCore.Domain;
+using ShopDomain.Common;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +11,7 @@ namespace ShopDomain.Catalog
         private int _reviewId;
         private string _reviewer;
         private string _reviewText;
-        private DateTime _reviewDate;
+        private Date _reviewDate;
         private int _rating;
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace ShopDomain.Catalog
         {
             _reviewer = reviewer;
             _reviewText = reviewText;
-            _reviewDate = DateTime.UtcNow;
+            _reviewDate = Date.TodayLocal;
             _rating = rating;
         }
 
@@ -44,7 +45,7 @@ namespace ShopDomain.Catalog
             get { return _reviewText; }
         }
 
-        public DateTime ReviewDate
+        public Date ReviewDate
         {
             get { return _reviewDate; }
         }

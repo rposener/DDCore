@@ -1,17 +1,19 @@
 ﻿using DDCore.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ShopDomain.Common
 {
+    [Owned]
     public class Address : ValueObject
     {
         // EF Backing Fields
-        private readonly string _street;
-        private readonly string _city;
-        private readonly string _state;
-        private readonly string _postCode;
+        private string _street;
+        private string _city;
+        private string _state;
+        private string _postCode;
 
         // Properties
         public string Street { get => _street; }
