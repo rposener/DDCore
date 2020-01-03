@@ -22,7 +22,6 @@ namespace ShopData
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
                 .UseHiLo()
                 .ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly);
-
         }
 
         /// <summary>

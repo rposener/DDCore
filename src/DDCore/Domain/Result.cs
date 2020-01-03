@@ -46,7 +46,7 @@ namespace DDCore.Domain
 
         public static Result Combine<T>(IEnumerable<Result<T>> results, string errorMessagesSeparator = null)
         {
-            var untyped = results.Select(result => (Result)result);
+            var untyped = results.Cast<Result>();
             return Combine(untyped, errorMessagesSeparator);
         }
     }

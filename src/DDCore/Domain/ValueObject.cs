@@ -6,7 +6,7 @@ namespace DDCore.Domain
 {
     /// <summary>
     /// Base Abstract Class for all Value Objects
-    /// Supports Sorting and Comparison by the returns from <see cref="GetEqualityComponents"/>
+    /// Supports a Default Sort and Equality Comparison by the returns from <see cref="GetEqualityComponents"/>
     /// </summary>
     public abstract class ValueObject : IComparable, IEquatable<ValueObject>
     {

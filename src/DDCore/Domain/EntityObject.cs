@@ -5,7 +5,7 @@ using System.Linq;
 namespace DDCore.Domain
 {
     /// <summary>
-    /// Base Class for all Entities which have and Identity specified by items returned from <see cref="GetIdentityComponents"/>
+    /// Base Class for all Entities which have an Identity specified by items returned from <see cref="GetIdentityComponents"/>
     /// </summary>
     public abstract class EntityObject : IEquatable<EntityObject>
     {
