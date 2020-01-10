@@ -8,11 +8,11 @@ namespace ShopDomain.Catalog
     public class Review : ValueObject
     {
         // EF Core Backing Fields
-        private int _reviewId;
-        private string _reviewer;
-        private string _reviewText;
-        private Date _reviewDate;
-        private int _rating;
+        private int review_id;
+        private string reviewer;
+        private string reviewText;
+        private Date reviewDate;
+        private int rating;
 
         /// <summary>
         /// Private Constructor for EF Core Materialization
@@ -24,35 +24,35 @@ namespace ShopDomain.Catalog
 
         internal Review(string reviewer, string reviewText, int rating)
         {
-            _reviewer = reviewer;
-            _reviewText = reviewText;
-            _reviewDate = Date.TodayLocal;
-            _rating = rating;
+            this.reviewer = reviewer;
+            this.reviewText = reviewText;
+            reviewDate = Date.TodayLocal;
+            this.rating = rating;
         }
 
         public int ReviewId
         {
-            get { return _reviewId; }
+            get { return review_id; }
         }
 
         public string Reviewer 
         { 
-            get { return _reviewer; }
+            get { return reviewer; }
         }
 
         public string ReviewText
         {
-            get { return _reviewText; }
+            get { return reviewText; }
         }
 
         public Date ReviewDate
         {
-            get { return _reviewDate; }
+            get { return reviewDate; }
         }
 
         public int Rating
         {
-            get { return _rating; }
+            get { return rating; }
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace ShopDomain.Catalog
         /// <returns></returns>
         protected override IEnumerable<IComparable> GetEqualityComponents()
         {
-            yield return _reviewer;
-            yield return _reviewText;
+            yield return reviewer;
+            yield return reviewText;
         }
     }
 }

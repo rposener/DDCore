@@ -18,9 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopDataTests", "demosrc\ShopDataTests\ShopDataTests.csproj", "{BD3DA791-CB71-4BD9-9D8A-C188C186E0B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopDataTests", "demosrc\ShopDataTests\ShopDataTests.csproj", "{BD3DA791-CB71-4BD9-9D8A-C188C186E0B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopDomainTests", "demosrc\ShopDomainTests\ShopDomainTests.csproj", "{88710146-B841-4655-BDEE-34C9A1B69D3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopDomainTests", "demosrc\ShopDomainTests\ShopDomainTests.csproj", "{88710146-B841-4655-BDEE-34C9A1B69D3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopDapperData", "demosrc\ShopDapperData\ShopDapperData.csproj", "{65BD1345-EC59-4B54-AEDF-F90C8E1050DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopDapperDataTests", "demosrc\ShopDapperDataTests\ShopDapperDataTests.csproj", "{F273FB14-3F22-4BF9-AF55-98C0B83F5665}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +58,14 @@ Global
 		{88710146-B841-4655-BDEE-34C9A1B69D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88710146-B841-4655-BDEE-34C9A1B69D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88710146-B841-4655-BDEE-34C9A1B69D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65BD1345-EC59-4B54-AEDF-F90C8E1050DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65BD1345-EC59-4B54-AEDF-F90C8E1050DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65BD1345-EC59-4B54-AEDF-F90C8E1050DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65BD1345-EC59-4B54-AEDF-F90C8E1050DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F273FB14-3F22-4BF9-AF55-98C0B83F5665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F273FB14-3F22-4BF9-AF55-98C0B83F5665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F273FB14-3F22-4BF9-AF55-98C0B83F5665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F273FB14-3F22-4BF9-AF55-98C0B83F5665}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +76,8 @@ Global
 		{8A93268C-AAE1-4940-A778-2357E4BA53CF} = {7BBD5AE1-9CFC-461D-8103-5F14CD193313}
 		{BD3DA791-CB71-4BD9-9D8A-C188C186E0B2} = {7BBD5AE1-9CFC-461D-8103-5F14CD193313}
 		{88710146-B841-4655-BDEE-34C9A1B69D3A} = {7BBD5AE1-9CFC-461D-8103-5F14CD193313}
+		{65BD1345-EC59-4B54-AEDF-F90C8E1050DB} = {7BBD5AE1-9CFC-461D-8103-5F14CD193313}
+		{F273FB14-3F22-4BF9-AF55-98C0B83F5665} = {7BBD5AE1-9CFC-461D-8103-5F14CD193313}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F808510-04B0-43FB-9E28-38C9182AAD00}
