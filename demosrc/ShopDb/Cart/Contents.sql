@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [Cart].[Contents]
 (
-	[CartId] INT NOT NULL , 
-    [ProductId] INT NOT NULL , 
+	[CartId] BIGINT NOT NULL , 
+    [ProductId] BIGINT NOT NULL , 
     [Price] MONEY NOT NULL, 
     [Quantity] INT NOT NULL DEFAULT (1),
 	CONSTRAINT [FK_Contents_CartDetails] FOREIGN KEY ([CartId]) REFERENCES [Cart].[Details]([CartId]), 

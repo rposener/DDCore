@@ -13,7 +13,7 @@ namespace ShopDomain.Catalog
         public const int DESCRIPTION_LENGTH = 512;
 
         // EF Backing Field for Value Object
-        private int product_id;
+        private long product_id;
         private string name;
         private string description;
         private decimal price;
@@ -28,7 +28,7 @@ namespace ShopDomain.Catalog
             }
         }
 
-        public int ProductId
+        public long ProductId
         {
             get { return product_id; }
         }

@@ -4,7 +4,7 @@ namespace ShopDomain.Catalog
 {
     public class ProductSummaryResult : IQueryResult
     {
-        public ProductSummaryResult(int productId, decimal? rating, string name, string description, decimal price)
+        public ProductSummaryResult(long productId, decimal? rating, string name, string description, decimal price)
         {
             ProductId = productId;
             Rating = rating;
@@ -15,9 +15,9 @@ namespace ShopDomain.Catalog
 
         public decimal? Rating { get; private set; }
 
-        public int ProductId { get; private set; }
+        public long ProductId { get; private set; }
 
-        public virtual string Name { get; private set; }
+        public string Name { get; private set; }
 
         public string Description { get; private set; }
 

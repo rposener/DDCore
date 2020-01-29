@@ -68,6 +68,8 @@
     <Build Include="Cart\Details.sql" />
     <Build Include="Cart\Contents.sql" />
     <Build Include="Product\Summaries.sql" />
+    <Build Include="Product\ReviewsSequence.sql" />
+    <Build Include="Product\DetailsSequence.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ShopDb.refactorlog" />

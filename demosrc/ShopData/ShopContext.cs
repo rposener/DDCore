@@ -20,7 +20,6 @@ namespace ShopData
         {
             modelBuilder
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
-                .UseHiLo()
                 .ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly);
         }
 

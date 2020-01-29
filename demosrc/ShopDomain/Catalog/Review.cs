@@ -8,7 +8,7 @@ namespace ShopDomain.Catalog
     public class Review : ValueObject
     {
         // EF Core Backing Fields
-        private int review_id;
+        private long review_id;
         private string reviewer;
         private string reviewText;
         private Date reviewDate;
@@ -30,7 +30,7 @@ namespace ShopDomain.Catalog
             this.rating = rating;
         }
 
-        public int ReviewId
+        public long ReviewId
         {
             get { return review_id; }
         }

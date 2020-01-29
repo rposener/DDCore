@@ -7,7 +7,7 @@ namespace ShopDomain.Users
     public class Customer : EntityObject, IAggregateRoot
     {
         // EF Backing Fields
-        private int _customerId;
+        private long _customerId;
         private string _displayName;
         private DateTime _lastSeen;
         private DateTime _addedOn;
@@ -17,7 +17,7 @@ namespace ShopDomain.Users
         /// <summary>
         /// Publicly Visible Properties
         /// </summary>
-        public int CustomerId { get => _customerId; }
+        public long CustomerId { get => _customerId; }
         public string DisplayName { get => _displayName; }
         public DateTime LastSeen { get => _lastSeen; }
         public DateTime AddedOn { get => _addedOn; }

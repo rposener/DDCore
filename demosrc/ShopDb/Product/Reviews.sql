@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [Product].[Reviews]
 (
-	[ReviewId] INT IDENTITY NOT NULL PRIMARY KEY,
-	[ProductId] INT NOT NULL, 
+	[ReviewId] BIGINT NOT NULL PRIMARY KEY,
+	[ProductId] BIGINT NOT NULL, 
     [Reviewer] NVARCHAR(50) NULL, 
     [ReviewText] NVARCHAR(MAX) NULL, 
     [ReviewDate] DATE NOT NULL, 

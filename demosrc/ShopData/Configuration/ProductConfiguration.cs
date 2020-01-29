@@ -16,7 +16,7 @@ namespace ShopData.Configuration
            
             builder.ToTable("Details", "Product");
             builder.HasKey(p => p.ProductId);
-            builder.Property(p => p.ProductId).UseIdentityColumn();
+            builder.Property(p => p.ProductId).UseHiLo("DetailSequence","Product");
             builder.Property(p => p.Name);
             builder.Property(p => p.Description);
             builder.Property(p => p.Price);
@@ -24,10 +24,10 @@ namespace ShopData.Configuration
             // Owned Properties
             builder.OwnsMany(p => p.Reviews, pr =>
             {
-                pr.ToTable("Review", "Product");
+                pr.ToTable("Reviews", "Product");
                 pr.WithOwner().HasForeignKey("ProductId");
                 pr.HasKey(r => r.ReviewId);
-                pr.Property(r => r.ReviewId).UseIdentityColumn();
+                pr.Property(r => r.ReviewId).UseHiLo("ReviewSequence", "Product");
                 pr.Property(r => r.Reviewer);
                 pr.Property(r => r.ReviewDate).IsValueType();
                 pr.Property(r => r.ReviewText);
