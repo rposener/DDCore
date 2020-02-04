@@ -10,6 +10,13 @@ namespace ShopDapperData.Profiles
     {
         public DomainProfile()
         {
+            DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+            SourceMemberNamingConvention = new UnderscoreCamelCaseNamingConvention();
+
+            // map all fields
+            ShouldMapField = fi => false;
+            // don't map any properties
+            ShouldMapProperty = pi => true;
 
             // Domain -> Data Maps
             CreateMap<ShopDomain.Catalog.Product, Product>();

@@ -12,6 +12,6 @@ namespace DDCore.Data
         /// <summary>
         /// Saves Changes in a single transaction made to items in the Repository
         /// </summary>
-        public abstract Task SaveChangesAsync();
+        public Task SaveChangesAsync();
     }
 }

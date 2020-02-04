@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [Cart].[Details]
 (
-	[CartId] BIGINT NOT NULL PRIMARY KEY, 
+	[CartId] BIGINT NOT NULL  DEFAULT NEXT VALUE FOR [Cart].[CartSequence], 
     [Created] DATETIME2 NOT NULL DEFAULT (SYSUTCDATETIME()), 
-    [CartIdentifier] NVARCHAR(50) NOT NULL
+    [CartIdentifier] NVARCHAR(50) NOT NULL, 
+    CONSTRAINT [PK_Details] PRIMARY KEY ([CartId])
 )

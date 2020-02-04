@@ -14,19 +14,18 @@ namespace ShopDapperData.Profiles
         /// </summary>
         public ProductProfile()
         {
-            DestinationMemberNamingConvention = new LowerUnderscoreNamingConvention();
+            DestinationMemberNamingConvention = new UnderscoreCamelCaseNamingConvention();
             SourceMemberNamingConvention = new PascalCaseNamingConvention();
-            // don't map any fields
-            ShouldMapField = fi => true;
 
-            // map properties with a public or private getter
-            ShouldMapProperty = pi =>
-                pi.GetMethod != null && (pi.GetMethod.IsPublic || pi.GetMethod.IsPrivate);
+            // map all fields
+            ShouldMapField = fi => true;
+            // don't map any properties
+            ShouldMapProperty = pi => false;
 
             ShouldUseConstructor = ci => ci.IsPrivate && ci.GetParameters().Length == 0;
             // Data -> Domain Maps
             CreateMap<Product, ShopDomain.Catalog.Product>()
-                .ForMember("reviews", opt => opt.Ignore());
+                .ForMember("_reviews", opt => opt.Ignore());
 
             CreateMap<Review, ShopDomain.Catalog.Review>();
                 //.ForMember("review_id", opts => opts.MapFrom(src => src.ReviewId))

@@ -29,5 +29,6 @@ namespace ShopData
         {
             return propertyBuilder.HasColumnType("date").HasConversion(DateConverter);
         }
+
     }
 }

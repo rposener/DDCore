@@ -6,7 +6,7 @@ using System.Globalization;
 namespace ShopDomain.Common
 {
     /// <summary>
-    /// Represents a Date without any Time Component
+    /// Represents an Immutable Date without any Time Component
     /// </summary>
     public class Date : ValueObject
     {

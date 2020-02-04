@@ -8,11 +8,11 @@ namespace ShopDomain.Catalog
     public class Review : ValueObject
     {
         // EF Core Backing Fields
-        private long review_id;
-        private string reviewer;
-        private string reviewText;
-        private Date reviewDate;
-        private int rating;
+        private long _reviewId;
+        private string _reviewer;
+        private string _reviewText;
+        private Date _reviewDate;
+        private int _rating;
 
         /// <summary>
         /// Private Constructor for EF Core Materialization
@@ -24,35 +24,35 @@ namespace ShopDomain.Catalog
 
         internal Review(string reviewer, string reviewText, int rating)
         {
-            this.reviewer = reviewer;
-            this.reviewText = reviewText;
-            reviewDate = Date.TodayLocal;
-            this.rating = rating;
+            this._reviewer = reviewer;
+            this._reviewText = reviewText;
+            _reviewDate = Date.TodayLocal;
+            this._rating = rating;
         }
 
         public long ReviewId
         {
-            get { return review_id; }
+            get { return _reviewId; }
         }
 
         public string Reviewer 
         { 
-            get { return reviewer; }
+            get { return _reviewer; }
         }
 
         public string ReviewText
         {
-            get { return reviewText; }
+            get { return _reviewText; }
         }
 
         public Date ReviewDate
         {
-            get { return reviewDate; }
+            get { return _reviewDate; }
         }
 
         public int Rating
         {
-            get { return rating; }
+            get { return _rating; }
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace ShopDomain.Catalog
         /// <returns></returns>
         protected override IEnumerable<IComparable> GetEqualityComponents()
         {
-            yield return reviewer;
-            yield return reviewText;
+            yield return _reviewer;
+            yield return _reviewText;
         }
     }
 }

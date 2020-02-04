@@ -13,44 +13,44 @@ namespace ShopDomain.Catalog
         public const int DESCRIPTION_LENGTH = 512;
 
         // EF Backing Field for Value Object
-        private long product_id;
-        private string name;
-        private string description;
-        private decimal price;
+        private long _productId;
+        private string _name;
+        private string _description;
+        private decimal _price;
 
-        private IList<Review> reviews;
+        private IList<Review> _reviews;
 
         public IList<Review> Reviews
         {
             get 
             {
-                return reviews.ToArray();
+                return _reviews.ToArray();
             }
         }
 
         public long ProductId
         {
-            get { return product_id; }
+            get { return _productId; }
         }
 
         public virtual string Name
         {
-            get { return name; }
+            get { return _name; }
         }
 
         public string Description
         {
-            get { return description; }
+            get { return _description; }
         }
 
         public decimal Price
         {
-            get { return price; }
+            get { return _price; }
         }
 
         private Product()
         {
-            reviews = new List<Review>();
+            _reviews = new List<Review>();
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace ShopDomain.Catalog
         /// <param name="price"></param>
         private Product(string name, string description, decimal price):this()
         {
-            this.name = name ?? throw new ArgumentNullException(nameof(name));
-            this.description = description ?? string.Empty;
-            this.price = price;
+            this._name = name ?? throw new ArgumentNullException(nameof(name));
+            this._description = description ?? string.Empty;
+            this._price = price;
         }
 
         #region Validation Methods
@@ -136,30 +136,30 @@ namespace ShopDomain.Catalog
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Product must have a name.");
-            this.name = name;
+            this._name = name;
         }
 
         public void UpdateDescription(string description)
         {
-            this.description = description;
+            this._description = description;
         }
 
         public void AddReview(string reviewer, string reviewText, int rating)
         {
             var newReview = new Review(reviewer, reviewText, rating);
-            if (reviews.Any(r => r == newReview))
+            if (_reviews.Any(r => r == newReview))
             {
                 // Already Exists, do not add
                 return;
             }
 
             // Add the new Review
-            reviews.Add(newReview);
+            _reviews.Add(newReview);
 
             // Ensure we only keep the last MAX_REVIEWS for this product
-            while (reviews.Count > MAX_REVIEWS)
+            while (_reviews.Count > MAX_REVIEWS)
             {
-                reviews.RemoveAt(0);
+                _reviews.RemoveAt(0);
             }
         }
 

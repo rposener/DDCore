@@ -5,7 +5,7 @@ using System.Linq;
 namespace DDCore.Domain
 {
     /// <summary>
-    /// Base Abstract Class for all Value Objects
+    /// Base Abstract Class for all Immutable Value Objects all fields should be readonly
     /// Supports a Default Sort and Equality Comparison by the returns from <see cref="GetEqualityComponents"/>
     /// </summary>
     public abstract class ValueObject : IComparable, IEquatable<ValueObject>
@@ -57,6 +57,8 @@ namespace DDCore.Domain
 
         public bool Equals(ValueObject other)
         {
+            if (other == null)
+                return false;
             // Do a Simple Comparison of these Objects
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
