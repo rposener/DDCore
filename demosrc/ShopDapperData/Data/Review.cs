@@ -6,7 +6,7 @@ namespace ShopDapperData.Data
 {
     public class Review
     {
-        public int ReviewId;
+        public long ReviewId;
         public string Reviewer;
         public string ReviewText;
         public DateTime ReviewDate;

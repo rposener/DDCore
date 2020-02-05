@@ -9,9 +9,5 @@ namespace DDCore.Data
     /// </summary>
     public interface IRepository<T> where T: IAggregateRoot
     {
-        /// <summary>
-        /// Saves Changes in a single transaction made to items in the Repository
-        /// </summary>
-        public Task SaveChangesAsync();
     }
 }

@@ -18,13 +18,13 @@ namespace ShopDomain.Catalog
         private string _description;
         private decimal _price;
 
-        private IList<Review> _reviews;
+        private List<Review> _reviews;
 
-        public IList<Review> Reviews
+        public IReadOnlyList<Review> Reviews
         {
             get 
             {
-                return _reviews.ToArray();
+                return _reviews;
             }
         }
 

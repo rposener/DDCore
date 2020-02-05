@@ -6,7 +6,7 @@ namespace ShopDapperData.Data
 {
     public class Product
     {
-        public int ProductId;
+        public long ProductId;
         public string Name;
         public string Description;
         public decimal Price;
