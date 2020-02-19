@@ -28,6 +28,15 @@ namespace ShopData
         }
 
         /// <summary>
+        /// Adds a Product to the Repository
+        /// </summary>
+        /// <param name="newProduct"></param>
+        public void AddProduct(Product newProduct)
+        {
+            context.Add(newProduct);
+        }
+
+        /// <summary>
         /// Returns a <seealso cref="Product"/> from the Repository or null if none are found
         /// </summary>
         /// <param name="productId"></param>
