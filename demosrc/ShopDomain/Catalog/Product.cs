@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace ShopDomain.Catalog
 {
@@ -61,9 +62,9 @@ namespace ShopDomain.Catalog
         /// <param name="price"></param>
         private Product(string name, string description, decimal price):this()
         {
-            this._name = name ?? throw new ArgumentNullException(nameof(name));
-            this._description = description ?? string.Empty;
-            this._price = price;
+            _name = name ?? throw new ArgumentNullException(nameof(name));
+            _description = description ?? string.Empty;
+            _price = price;
         }
 
         #region Validation Methods
@@ -123,44 +124,53 @@ namespace ShopDomain.Catalog
             // Validate on Create
             var validationResult = Validate(name, description, price);
             if (validationResult.IsFailure)
-                return Result<Product>.Failure(validationResult.Error);
+                return Result.Failure<Product>(validationResult.Error);
 
-            return Result<Product>.Success(new Product(name, description, price));
+            return Result.Success(new Product(name, description, price));
         }
 
         #endregion Factory Methods
 
         #region Member Methods
 
-        public void ChangeName(string name)
+        public Result ChangeName(string name)
         {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Product must have a name.");
+            var validationResult = ValidateName(name);
+            if (validationResult.IsFailure)
+                return validationResult;
             this._name = name;
+            return Result.Success();
         }
 
-        public void UpdateDescription(string description)
+        public Result UpdateDescription(string description)
         {
+            var validationResult = ValidateDescription(description);
+            if (validationResult.IsFailure)
+                return validationResult;
             this._description = description;
+            return Result.Success();
         }
 
-        public void AddReview(string reviewer, string reviewText, int rating)
+        public Result AddReview(string reviewer, string reviewText, int rating)
         {
-            var newReview = new Review(reviewer, reviewText, rating);
+            var reviewResult = Review.Create(reviewer, reviewText, rating);
+            if (reviewResult.IsFailure)
+                return reviewResult;
+            var newReview = reviewResult.Value;
             if (_reviews.Any(r => r == newReview))
             {
                 // Already Exists, do not add
-                return;
+                return Result.Success();
             }
 
             // Add the new Review
             _reviews.Add(newReview);
-
             // Ensure we only keep the last MAX_REVIEWS for this product
             while (_reviews.Count > MAX_REVIEWS)
             {
                 _reviews.RemoveAt(0);
             }
+            return Result.Success();
         }
 
         #endregion Member Methods

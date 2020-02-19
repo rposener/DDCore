@@ -31,16 +31,15 @@ namespace ShopDomainTests
             Assert.AreEqual("Product price cannot be negative.", result.Error);
         }
 
-
         [TestMethod]
         public void AddReview_Limits_Reviews()
         {
 
-            var product = Product.Create("test", "test", 1.00M).Value;
+            var product = Product.Create("test", "test description", 1.00M).Value;
 
             for (int i = 0; i <= Product.MAX_REVIEWS; i++)
             {
-                product.AddReview($"review {i}", "test", 3);
+                product.AddReview($"review {i}", "test review text", 3);
             }
 
             Assert.AreEqual(Product.MAX_REVIEWS, product.Reviews.Count);

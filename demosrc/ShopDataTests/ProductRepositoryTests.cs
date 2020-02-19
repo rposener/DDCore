@@ -131,7 +131,7 @@ namespace ShopDataTests
                 // Add 1 more than MAX_REVIEWS
                 for (int i = 0; i <= Product.MAX_REVIEWS; i++)
                 {
-                    product.AddReview($"review {i}", "test", 3);
+                    product.AddReview($"review {i}", "test review notes", 3);
                 }
                 await repository.SaveChangesAsync();
             }

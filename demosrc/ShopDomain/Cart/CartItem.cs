@@ -61,8 +61,8 @@ namespace ShopDomain.Cart
         {
             var result = ValidateQuantity(quantity);
             if (result.IsFailure)
-                return Result<CartItem>.Failure(result.Error);
-            return Result<CartItem>.Success(new CartItem(productId, quantity));
+                return Result.Failure<CartItem>(result.Error);
+            return Result.Success(new CartItem(productId, quantity));
         }
 
         #endregion Factory Methods
