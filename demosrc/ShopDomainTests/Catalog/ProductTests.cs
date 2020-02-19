@@ -2,6 +2,7 @@
 using ShopDomain.Catalog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ShopDomainTests
@@ -28,7 +29,7 @@ namespace ShopDomainTests
             var result = Product.Create("test", "test", -1.00M);
 
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual("Product price cannot be negative.", result.Error);
+            Assert.AreEqual("The field Price must be between 0.01 and 1000000.", result.ValidationResults.First().ErrorMessage);
         }
 
         [TestMethod]

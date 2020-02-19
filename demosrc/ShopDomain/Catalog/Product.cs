@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 
 namespace ShopDomain.Catalog
 {
-    public class Product : EntityObject, IAggregateRoot
+    public class Product : EntityObject, IAggregateRoot, IValidatableObject
     {
         public const int MAX_REVIEWS = 50;
         public const int NAME_LENGTH = 128;
@@ -25,7 +26,7 @@ namespace ShopDomain.Catalog
         {
             get 
             {
-                return _reviews;
+                return _reviews.AsReadOnly();
             }
         }
 
@@ -44,6 +45,7 @@ namespace ShopDomain.Catalog
             get { return _description; }
         }
 
+        [Range(0.01, 1000000)]
         public decimal Price
         {
             get { return _price; }
@@ -68,15 +70,6 @@ namespace ShopDomain.Catalog
         }
 
         #region Validation Methods
-        public static Result Validate(string name, string description, decimal price)
-        {
-            List<Result> results = new List<Result>();
-            results.Add(ValidateName(name));
-            results.Add(ValidateDescription(description));
-            results.Add(ValidatePrice(price));
-
-            return Result.Combine(results);
-        }
 
         public static Result ValidateName(string name)
         {
@@ -92,15 +85,6 @@ namespace ShopDomain.Catalog
         {
             if (description.Length > NAME_LENGTH)
                 return Result.Failure($"Product description must not be longer than {DESCRIPTION_LENGTH} characters.");
-
-            return Result.Success();
-        }
-
-
-        public static Result ValidatePrice(decimal price)
-        {
-            if (price < 0)
-                return Result.Failure("Product price cannot be negative.");
 
             return Result.Success();
         }
@@ -122,11 +106,7 @@ namespace ShopDomain.Catalog
             description = (description ?? String.Empty).Trim();
 
             // Validate on Create
-            var validationResult = Validate(name, description, price);
-            if (validationResult.IsFailure)
-                return Result.Failure<Product>(validationResult.Error);
-
-            return Result.Success(new Product(name, description, price));
+            return Result.Validate(new Product(name, description, price));
         }
 
         #endregion Factory Methods
@@ -182,6 +162,13 @@ namespace ShopDomain.Catalog
         protected override IEnumerable<IComparable> GetIdentityComponents()
         {
             yield return ProductId;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var manual = Result.Combine(new[] { ValidateName(_name), ValidateDescription(_description) });
+            if (manual.IsFailure)
+                yield return new ValidationResult(manual.Error);
         }
     }
 }
