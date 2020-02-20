@@ -12,9 +12,6 @@ namespace ShopData
             {
                 options.UseSqlServer(connectionString);
             });
-
-            services.AddScoped<ProductRepository>();
-            services.AddScoped<ProductSummaryQuery>();
         }
     }
 }

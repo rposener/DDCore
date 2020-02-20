@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ShopData;
+using DDCore;
+using ShopServices.Queries;
 
 namespace ShopWeb
 {
@@ -30,6 +32,7 @@ namespace ShopWeb
             services.AddControllers();
             services.AddMvcCore().AddApiExplorer();
             services.AddShopData(Configuration.GetConnectionString("ShopDB"));
+            services.AddDDCore(typeof(GetProduct).Assembly);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shop API", Version = "v1" });

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -10,8 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShopData\ShopData.csproj" />
-    <ProjectReference Include="..\ShopDomain\ShopDomain.csproj" />
+    <ProjectReference Include="..\ShopServices\ShopServices.csproj" />
   </ItemGroup>
 
 

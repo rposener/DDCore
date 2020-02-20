@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopData.Configuration;
+using ShopData.ViewTypes;
 using ShopDomain.Catalog;
 
 namespace ShopData
@@ -28,6 +29,10 @@ namespace ShopData
         /// note: Owned Value Types do not appear here
         /// </summary>
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductSummaryResult> ProductSummaries { get; set; }
+
+        /// <summary>
+        /// Query Only Set backed by a View
+        /// </summary>
+        public DbSet<ProductResult> ProductSummaries { get; set; }
     }
 }

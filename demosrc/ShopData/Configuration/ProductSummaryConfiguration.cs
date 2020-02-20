@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShopDomain.Catalog;
+using ShopData.ViewTypes;
 
 namespace ShopData.Configuration
 {
-    public class ProductSummaryConfiguration : IEntityTypeConfiguration<ProductSummaryResult>
+    public class ProductSummaryConfiguration : IEntityTypeConfiguration<ProductResult>
     {
-        public void Configure(EntityTypeBuilder<ProductSummaryResult> builder)
+        public void Configure(EntityTypeBuilder<ProductResult> builder)
         {
             builder.ToView("Summaries", "Product");
             builder.HasKey(p => p.ProductId);
