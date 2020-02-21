@@ -10,6 +10,8 @@ namespace ShopData.Configuration
         {
             builder.ToView("Summaries", "Product");
             builder.HasKey(p => p.ProductId);
+            builder.Property(p => p.Rating).HasColumnType("decimal(3,2)");
+            builder.Property(p => p.Price).HasColumnType("money");
             builder.UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
         }
     }

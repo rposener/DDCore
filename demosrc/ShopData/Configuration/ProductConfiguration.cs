@@ -17,9 +17,9 @@ namespace ShopData.Configuration
             builder.ToTable("Details", "Product");
             builder.HasKey(p => p.ProductId);
             builder.Property(p => p.ProductId).UseHiLo("DetailsSequence","Product");
-            builder.Property(p => p.Name);
-            builder.Property(p => p.Description);
-            builder.Property(p => p.Price);
+            builder.Property(p => p.Name).HasColumnType("varchar(50)");
+            builder.Property(p => p.Description).HasColumnType("varchar(max)");
+            builder.Property(p => p.Price).HasColumnType("money");
 
             // Owned Properties
             builder.OwnsMany(p => p.Reviews, pr =>
@@ -28,10 +28,10 @@ namespace ShopData.Configuration
                 pr.WithOwner().HasForeignKey("ProductId");
                 pr.HasKey(r => r.ReviewId);
                 pr.Property(r => r.ReviewId).UseHiLo("ReviewsSequence", "Product");
-                pr.Property(r => r.Reviewer);
-                pr.Property(r => r.Rating);
-                pr.Property(r => r.ReviewDate).IsValueType();
-                pr.Property(r => r.ReviewText);
+                pr.Property(r => r.Reviewer).HasColumnType("varchar(50)");
+                pr.Property(r => r.Rating).HasColumnType("int");
+                pr.Property(r => r.ReviewDate).HasColumnType("date").IsValueType();
+                pr.Property(r => r.ReviewText).HasColumnType("varchar(max)");
             });
         }
     }

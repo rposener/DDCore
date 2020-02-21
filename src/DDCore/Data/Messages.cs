@@ -33,7 +33,7 @@ namespace DDCore.Data
             {
                 logger.LogError("The Command Handler {0} could not be resolved.", handlerType.FullName);
             }
-            logger.LogDebug("{0} starting execution using {1}", commandName, handlerType.Name);
+            logger.LogDebug("{0} starting execution using {1}", commandName, ((Type)handler.GetType()).Name);
             var sw = Stopwatch.StartNew();
             Result result;
             try
@@ -46,10 +46,9 @@ namespace DDCore.Data
                 throw;
             }
             sw.Stop();
-            logger.LogDebug("{0} execution took {1}.", commandName, sw.Elapsed);
             if (result.IsSuccess)
             {
-                logger.LogDebug("{0} was successful", commandName);
+                logger.LogInformation("{0} successful execution took {1} using {2}.", commandName, sw.Elapsed, ((Type)handler.GetType()).Name);
             }
             else
             {
@@ -72,7 +71,7 @@ namespace DDCore.Data
             {
                 logger.LogError("The Command Handler for {0} could not be resolved.", queryName);
             }
-            logger.LogDebug("{0} starting execution using {1}", queryName, handlerType.Name);
+            logger.LogDebug("{0} starting execution using {1}", queryName, ((Type)handler.GetType()).Name);
             var sw = Stopwatch.StartNew();
             TResult result;
             try
@@ -85,8 +84,7 @@ namespace DDCore.Data
                 throw;
             }
             sw.Stop();
-            logger.LogDebug("{0} execution took {1}.", queryName, sw.Elapsed);
-            logger.LogDebug("{0} was successful", queryName);
+            logger.LogInformation("{0} successful execution took {1} using {2}.", queryName, sw.Elapsed, ((Type)handler.GetType()).Name);
             return result;
         }
     }
