@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace DDCore.Domain
 {
@@ -77,6 +78,11 @@ namespace DDCore.Domain
         public static bool operator !=(ValueObject a, ValueObject b)
         {
             return !(a == b);
+        }
+
+        public override string ToString()
+        {
+            return this.GetType().Name + ":" + String.Join(".", GetEqualityComponents().Select(c => c.ToString()));
         }
     }
 }

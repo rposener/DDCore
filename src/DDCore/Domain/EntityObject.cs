@@ -55,5 +55,10 @@ namespace DDCore.Domain
         {
             return !(a == b);
         }
+        
+        public override string ToString()
+        {
+            return this.GetType().Name + ":"+ String.Join(".", GetIdentityComponents().Select(c => c.ToString()));
+        }
     }
 }

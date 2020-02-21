@@ -26,20 +26,34 @@ namespace DDCore.Data
         /// <returns></returns>
         public async Task<Result> Dispatch(ICommand command)
         {
+            var commandName = command.GetType().Name;
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
-            logger.LogDebug("Finding Command Handler for {0}", handlerType.FullName);
             dynamic handler = provider.GetService(handlerType);
+            if (handler == null)
+            {
+                logger.LogError("The Command Handler {0} could not be resolved.", handlerType.FullName);
+            }
+            logger.LogDebug("{0} starting execution using {1}", commandName, handlerType.Name);
             var sw = Stopwatch.StartNew();
-            Result result = await handler.Execute(command);
+            Result result;
+            try
+            { 
+                result = await handler.HandleAsync((dynamic)command);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "{0} failed to execute", commandName);
+                throw;
+            }
             sw.Stop();
-            logger.LogDebug("Command Handler {0} execution took {1}.", handlerType.FullName, sw.Elapsed);
+            logger.LogDebug("{0} execution took {1}.", commandName, sw.Elapsed);
             if (result.IsSuccess)
             {
-                logger.LogDebug("Command Handler {0} was successful", handlerType.FullName);
+                logger.LogDebug("{0} was successful", commandName);
             }
             else
             {
-                logger.LogDebug("Command Handler {0} failed with error: {1}", handlerType.FullName, result.Error);
+                logger.LogError("{0} failed with error: {1}", commandName, result.Error);
             }
             return result;
         }
@@ -51,14 +65,28 @@ namespace DDCore.Data
         /// <returns></returns>
         public async Task<TResult> Dispatch<TResult>(IQuery<TResult> query)
         {
+            var queryName = query.GetType().Name;
             var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
-            logger.LogDebug("Finding Query Handler for {0}", handlerType.FullName);
             dynamic handler = provider.GetService(handlerType);
+            if (handler == null)
+            {
+                logger.LogError("The Command Handler for {0} could not be resolved.", queryName);
+            }
+            logger.LogDebug("{0} starting execution using {1}", queryName, handlerType.Name);
             var sw = Stopwatch.StartNew();
-            TResult result = await handler.Execute(query);
+            TResult result;
+            try
+            {
+                result = await handler.ExecuteAsync((dynamic)query);
+            } 
+            catch(Exception ex)
+            {
+                logger.LogError(ex, "{0} failed to execute", queryName);
+                throw;
+            }
             sw.Stop();
-            logger.LogDebug("Query Handler {0} execution took {1}.", handlerType.FullName, sw.Elapsed);
-            logger.LogDebug("Query Handler {0} was successful", handlerType.FullName);
+            logger.LogDebug("{0} execution took {1}.", queryName, sw.Elapsed);
+            logger.LogDebug("{0} was successful", queryName);
             return result;
         }
     }

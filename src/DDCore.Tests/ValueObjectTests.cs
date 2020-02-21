@@ -55,5 +55,28 @@ namespace DDCore.Tests
             Assert.AreNotEqual(valueObject3, valueObject4, "Objects are Equal");
 
         }
+
+        [TestMethod]
+        public void CheckToString()
+        {
+            // Test
+            var strResult = valueObject1.ToString();
+            // Assert
+            Assert.AreEqual("TestValueClass:100", strResult, "tostring not as expected");
+        }
+
+        [TestMethod]
+        public void CheckSortability()
+        {
+            // Setup
+            var list = new List<ValueObject>(new[] { valueObject3, valueObject1, valueObject4, valueObject2 });
+            // Test
+            list.Sort();
+            // Assert
+            Assert.AreEqual(list[0], valueObject1, "first item not sorted");
+            Assert.AreEqual(list[1], valueObject3, "second item not sorted");
+            Assert.AreEqual(list[2], valueObject2, "third item not sorted");
+            Assert.AreEqual(list[3], valueObject4, "fourth item not sorted");
+        }
     }
 }

@@ -3,6 +3,7 @@ using DDCore.Domain;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -24,23 +25,31 @@ namespace DDCore
 
             services.Scan(scan => scan
                 .FromAssemblies(assemblies)
-                .AddClasses(classes => classes.Where(t => typeof(ICommandHandler<>).IsAssignableFrom(t)), true)
-                .As(T => new[] { typeof(ICommandHandler<>).MakeGenericType(T) })
+                .AddClasses(classes => classes.Where(t => t.ClassImplementsGenericInterface((typeof(ICommandHandler<>)))), true)
+                .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
             services.Scan(scan => scan
                 .FromAssemblies(assemblies)
-                .AddClasses(classes => classes.Where(t => typeof(IQueryHandler<,>).IsAssignableFrom(t)), true)
-                .As(T =>
-                {
-                    var queryTypes = T.GetGenericArguments();
-                    return new[] {
-                        typeof(IQueryHandler<,>).MakeGenericType(queryTypes)
-                    };
-                })
+                .AddClasses(classes => classes.Where(t =>t.ClassImplementsGenericInterface(typeof(IQueryHandler<,>))), true)
+                .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
             services.AddScoped<Messages>();
+        }
+
+        static bool ClassImplementsGenericInterface(this Type classType, Type interfaceType) 
+        {
+            var interfacesImplemented = classType.GetInterfaces();
+            foreach (var inter in interfacesImplemented)
+            {
+                if (inter.IsGenericType)
+                {
+                    if (inter.GetGenericTypeDefinition() == interfaceType.GetGenericTypeDefinition())
+                        return true;
+                }
+            }
+            return false;
         }
     }
 }
