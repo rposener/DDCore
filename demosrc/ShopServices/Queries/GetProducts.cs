@@ -1,12 +1,12 @@
 ﻿using DDCore.Data;
-using ShopData.ViewTypes;
+using ShopServices.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ShopAppServices
 {
 
-    public class GetProducts : IQuery<IEnumerable<ProductResult>>
+    public class GetProducts : IQuery<IEnumerable<ProductSummary>>
     {
         public GetProducts(int pageSize, OrderBy order, int pageNumber)
         {

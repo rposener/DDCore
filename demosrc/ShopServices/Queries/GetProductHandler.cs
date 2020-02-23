@@ -2,6 +2,7 @@
 using DDCore.Data;
 using ShopData;
 using ShopDomain.Catalog;
+using ShopServices.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopServices.Queries
 {
-    public class GetProductHandler : IQueryHandler<GetProduct, Product>
+    public class GetProductHandler : IQueryHandler<GetProduct, ProductDetails>
     {
         private readonly ShopContext context;
 
@@ -18,9 +19,10 @@ namespace ShopServices.Queries
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<Product> ExecuteAsync(GetProduct query)
+        public async Task<ProductDetails> ExecuteAsync(GetProduct query)
         {
-            return await context.Products.FindAsync(query.ProductId);
+            var product = await context.Products.FindAsync(query.ProductId);
+            return new ProductDetails(product);
         }
     }
 }

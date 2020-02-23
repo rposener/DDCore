@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DDCore.Data;
+﻿using DDCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop.Commands;
 using ShopAppServices;
-using ShopData;
-using ShopData.ViewTypes;
-using ShopDomain.Catalog;
 using ShopServices.Commands;
+using ShopServices.DTOs;
 using ShopServices.Queries;
 using ShopWeb.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,16 +30,16 @@ namespace ShopWeb.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResult>>> Get([FromQuery] int pageSize = 50, [FromQuery] int page = 1, [FromQuery] GetProducts.OrderBy orderBy = GetProducts.OrderBy.RatingDesc)
+        public async Task<ActionResult<IEnumerable<ProductSummary>>> Get([FromQuery] int pageSize = 50, [FromQuery] int page = 1, [FromQuery] GetProducts.OrderBy orderBy = GetProducts.OrderBy.RatingDesc)
         {
-            var result = await mesages.Dispatch(new GetProducts(pageSize, orderBy, page));
+            var result = await mesages.DispatchAsync(new GetProducts(pageSize, orderBy, page));
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] NewProductDto product)
+        public async Task<ActionResult<ProductSummary>> CreateProduct([FromBody] NewProductDto product)
         {
-            var result = await mesages.Dispatch(new AddProduct(product.Name, product.Description, product.Price));
+            var result = await mesages.DispatchAsync(new AddProduct(product.Name, product.Description, product.Price));
             if (result)
             {
                 return Ok(result.Value);
@@ -52,9 +49,9 @@ namespace ShopWeb.Controllers
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> Get(long id)
+        public async Task<ActionResult<ProductSummary>> Get(long id)
         {
-            var result = await mesages.Dispatch(new GetProduct(id));
+            var result = await mesages.DispatchAsync(new GetProduct(id));
             return Ok(result);
         }
 
@@ -63,7 +60,7 @@ namespace ShopWeb.Controllers
         public async Task<ActionResult> Post(long id, NewReviewDto review)
         {
             var reviewer = User.Identity.Name ?? "Unknown Reviewer";
-            var result = await mesages.Dispatch(new AddProductReview(id, reviewer, review.Stars, review.ReviewText));
+            var result = await mesages.DispatchAsync(new AddProductReview(id, reviewer, review.Stars, review.ReviewText));
             if (result)
             {
                 return Ok(result.Value);

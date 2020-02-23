@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopData;
 using ShopData.ViewTypes;
+using ShopServices.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace ShopAppServices.Queries
     /// <summary>
     /// Handler to exectue a Query
     /// </summary>
-    public class GetProductsHandler : IQueryHandler<GetProducts, IEnumerable<ProductResult>>
+    public class GetProductsHandler : IQueryHandler<GetProducts, IEnumerable<ProductSummary>>
     {
         private readonly ShopContext context;
 
@@ -24,11 +25,13 @@ namespace ShopAppServices.Queries
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<ProductResult>> ExecuteAsync(GetProducts query)
+        public async Task<IEnumerable<ProductSummary>> ExecuteAsync(GetProducts query)
         {
             var skip = query.PageSize * (query.PageNumber - 1);
-            return await ApplyOrdering(context.ProductSummaries, query.Order)
+            var results = await ApplyOrdering(context.ProductSummaries, query.Order)
                 .Skip(skip).Take(query.PageSize).AsNoTracking().ToArrayAsync();
+
+            return results.Select(r => new ProductSummary(r));
         }
 
         /// <summary>

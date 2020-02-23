@@ -1,4 +1,5 @@
-﻿using DDCore.Domain;
+﻿using DDCore.Data;
+using DDCore.Domain;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDCore.Data
+namespace DDCore
 {
-    public sealed class Messages
+    public class Messages
     {
         private readonly IServiceProvider provider;
         private readonly ILogger<Messages> logger;
@@ -24,7 +25,7 @@ namespace DDCore.Data
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public async Task<Result> Dispatch(ICommand command)
+        public async Task<Result> DispatchAsync(ICommand command)
         {
             var commandName = command.GetType().Name;
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
@@ -62,7 +63,7 @@ namespace DDCore.Data
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public async Task<TResult> Dispatch<TResult>(IQuery<TResult> query)
+        public async Task<TResult> DispatchAsync<TResult>(IQuery<TResult> query)
         {
             var queryName = query.GetType().Name;
             var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));

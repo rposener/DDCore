@@ -34,7 +34,7 @@ namespace DDCore.Tests
             Mock.Get(handler).Setup(h => h.HandleAsync(It.IsAny<CmdA>())).ReturnsAsync(Result.Success());
 
             // Test
-            await messages.Dispatch(new CmdA());
+            await messages.DispatchAsync(new CmdA());
 
             // Asserts
             Mock.Get(provider).Verify(p => p.GetService(typeof(ICommandHandler<CmdA>)), Times.Once());
@@ -50,7 +50,7 @@ namespace DDCore.Tests
             Mock.Get(handler).Setup(h => h.HandleAsync(It.IsAny<CmdA>())).ReturnsAsync(Result.Failure("AA==failed"));
 
             // Test
-            await messages.Dispatch(new CmdA());
+            await messages.DispatchAsync(new CmdA());
 
             // Asserts
             Mock.Get(provider).Verify(p => p.GetService(typeof(ICommandHandler<CmdA>)), Times.Once());
@@ -68,7 +68,7 @@ namespace DDCore.Tests
             // Test
             await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () =>
            {
-               await messages.Dispatch(new CmdA());
+               await messages.DispatchAsync(new CmdA());
            }, "Did not throw exception");
 
             // Asserts
@@ -88,7 +88,7 @@ namespace DDCore.Tests
             Mock.Get(handler).Setup(h => h.ExecuteAsync(It.IsAny<QueryB>())).ReturnsAsync(providedResult);
 
             // Test
-            var actualResult = await messages.Dispatch(new QueryB());
+            var actualResult = await messages.DispatchAsync(new QueryB());
 
             // Asserts
             Mock.Get(provider).Verify(p => p.GetService(typeof(IQueryHandler<QueryB, ResultB>)), Times.Once());
@@ -108,7 +108,7 @@ namespace DDCore.Tests
             // Test
             await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () =>
             {
-                await messages.Dispatch(new QueryB());
+                await messages.DispatchAsync(new QueryB());
             }, "Did not throw exception");
 
             // Asserts
