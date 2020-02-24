@@ -20,6 +20,7 @@ namespace ShopData.Configuration
             builder.Property(p => p.Name).HasColumnType("varchar(50)");
             builder.Property(p => p.Description).HasColumnType("varchar(max)");
             builder.Property(p => p.Price).HasColumnType("money");
+            builder.Property<byte[]>("RowVer").HasColumnType("rowversion").IsConcurrencyToken();
 
             // Owned Properties
             builder.OwnsMany(p => p.Reviews, pr =>
@@ -32,6 +33,7 @@ namespace ShopData.Configuration
                 pr.Property(r => r.Rating).HasColumnType("int");
                 pr.Property(r => r.ReviewDate).HasColumnType("date").IsValueType();
                 pr.Property(r => r.ReviewText).HasColumnType("varchar(max)");
+                pr.Property<byte[]>("RowVer").HasColumnType("rowversion").IsConcurrencyToken();
             });
         }
     }

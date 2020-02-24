@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\DDCore\DDCore.csproj" />
     <ProjectReference Include="..\Shop\Shop.csproj" PrivateAssets="All" />
-    <ProjectReference Include="..\ShopData\ShopData.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ShopData\ShopData.csproj"/>
   </ItemGroup>
 
 </Project>

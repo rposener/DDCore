@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.OpenApi.Models;
 using ShopServices;
 
@@ -28,7 +32,13 @@ namespace ShopWeb
             });
 
             // Add Our API
-            services.AddShopServices(Configuration.GetConnectionString("ShopDB"));
+            services.AddShopServices(Configuration.GetConnectionString("ShopDB"), (builder) =>
+            {
+#if DEBUG
+                builder.AddConsole()
+                       .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Information);
+#endif
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

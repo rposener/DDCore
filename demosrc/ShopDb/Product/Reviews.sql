@@ -6,6 +6,7 @@
     [ReviewText] NVARCHAR(MAX) NULL, 
     [ReviewDate] DATE NOT NULL, 
     [Rating] INT NOT NULL, 
+    [RowVer] ROWVERSION NOT NULL, 
     CONSTRAINT [FK_Reviews_ProductDetails] FOREIGN KEY ([ProductId]) REFERENCES [Product].[Details]([ProductId]), 
     CONSTRAINT [PK_Reviews] PRIMARY KEY ([ReviewId]) 
 )
