@@ -1,4 +1,6 @@
-﻿using DDCore;
+﻿using AutoMapper;
+using DDCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop.Commands;
@@ -9,6 +11,8 @@ using ShopServices.Queries;
 using ShopWeb.Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,71 +21,87 @@ namespace ShopWeb.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Produces("application/json")]
     public class CatalogController : Controller
     {
         private readonly Messages mesages;
         private readonly ILogger<CatalogController> logger;
+        private readonly IMapper mapper;
 
-        public CatalogController(Messages mesages, ILogger<CatalogController> logger)
+        public CatalogController(Messages mesages, ILogger<CatalogController> logger, IMapper mapper)
         {
             this.mesages = mesages ?? throw new ArgumentNullException(nameof(mesages));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        // GET: api/<controller>
+        /// <summary>
+        /// Queries the Catalog for a set of <see cref="ProductSummaryDto"/>
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="page"></param>
+        /// <param name="orderBy"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductSummary>>> Get([FromQuery] int pageSize = 50, [FromQuery] int page = 1, [FromQuery] GetProducts.OrderBy orderBy = GetProducts.OrderBy.RatingDesc)
+        public async Task<ActionResult<IEnumerable<ProductSummaryDto>>> Get([FromQuery] int pageSize = 50, [FromQuery] int page = 1, [FromQuery]OrderProductsBy orderBy = OrderProductsBy.RatingDesc)
         {
-            var result = await mesages.DispatchAsync(new GetProducts(pageSize, orderBy, page));
-            return Ok(result);
+            var ordering = mapper.Map<GetProducts.OrderBy>(orderBy);
+            var results = await mesages.DispatchAsync(new GetProducts(pageSize, ordering, page));
+            var dtos = mapper.Map<ProductSummaryDto>(results);
+            return Ok(dtos);
         }
 
+        /// <summary>
+        /// Creates a New Product
+        /// </summary>
+        /// <param name="product">Details of new Product to Create</param>
+        /// <returns>New Product ID</returns>
         [HttpPost]
-        public async Task<ActionResult<ProductSummary>> CreateProduct([FromBody] NewProductDto product)
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(int))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(IDictionary<string, ICollection<string>>))]
+        public async Task<ActionResult<int>> CreateProduct([FromBody] NewProductDto product)
         {
             var result = await mesages.DispatchAsync(new AddProduct(product.Name, product.Description, product.Price));
             if (result)
             {
                 return Ok(result.Value);
             }
-            return BadRequest(result.Error);
+            ModelState.AddModelError("", result.Error);
+            return BadRequest(ModelState);
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ProductSummary>> Get(long id)
+        /// <summary>
+        /// Gets a Specific Product
+        /// </summary>
+        /// <param name="productId">Id of the Product</param>
+        /// <returns></returns>
+        [HttpGet("{productId}")]
+        public async Task<ActionResult<ProductSummaryDto>> Get(long productId)
         {
-            var result = await mesages.DispatchAsync(new GetProduct(id));
-            return Ok(result);
+            var result = await mesages.DispatchAsync(new GetProduct(productId));
+            var dto = mapper.Map<ProductSummaryDto>(result);
+            return Ok(dto);
         }
 
-        // POST api/<controller>
-        [HttpPost("{id}/review")]
-        public async Task<ActionResult> Post(long id, NewReviewDto review)
+        /// <summary>
+        /// Adds a new review to a Product
+        /// </summary>
+        /// <param name="productId">Id of the Product</param>
+        /// <param name="review">New Review to Add</param>
+        /// <returns></returns>
+        [HttpPost("{productId}/review")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(IDictionary<string, ICollection<string>>))]
+        public async Task<ActionResult> Post(long productId, NewReviewDto review)
         {
             var reviewer = User.Identity.Name ?? "Unknown Reviewer";
-            var result = await mesages.DispatchAsync(new AddProductReview(id, reviewer, review.Stars, review.ReviewText));
+            var result = await mesages.DispatchAsync(new AddProductReview(productId, reviewer, review.Stars, review.ReviewText));
             if (result)
             {
-                return Ok(result.Value);
+                return NoContent();
             }
-            return BadRequest(result.Error);
+            ModelState.AddModelError("", result.Error);
+            return BadRequest(ModelState);
         }
-
-        //[HttpPut("{id}/name")]
-        //public async Task UpdateName(int id, [FromBody]string value)
-        //{
-        //    var product = await productRepository.GetProductAsync(id);
-        //    product.ChangeName(value);
-        //    await productRepository.SaveChangesAsync();
-        //}
-
-        //[HttpPut("{id}/description")]
-        //public async Task UpdateDescription(int id, [FromBody]string value)
-        //{
-        //    var product = await productRepository.GetProductAsync(id);
-        //    product.UpdateDescription(value);
-        //    await productRepository.SaveChangesAsync();
-        //}
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ShopServices.DTOs
 {
-    public class ProductSummary
+    public sealed class ProductSummary
     {
         internal ProductSummary(ProductResult product)
         {
@@ -17,14 +17,14 @@ namespace ShopServices.DTOs
             Price = product.Price;
         }
 
-        public decimal? Rating { get; private set; }
+        public decimal? Rating { get; }
 
-        public long ProductId { get; private set; }
+        public long ProductId { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public decimal Price { get; private set; }
+        public decimal Price { get; }
     }
 }

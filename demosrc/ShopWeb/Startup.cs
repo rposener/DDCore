@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.OpenApi.Models;
 using ShopServices;
+using AutoMapper;
 
 namespace ShopWeb
 {
@@ -30,6 +31,8 @@ namespace ShopWeb
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shop API", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
 
             // Add Our API
             services.AddShopServices(Configuration.GetConnectionString("ShopDB"), (builder) =>

@@ -58,6 +58,5 @@ namespace ShopAppServices.Queries
             }
             return source.OrderBy(p => p.Rating);
         }
-
     }
 }
