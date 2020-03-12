@@ -1,15 +1,14 @@
-﻿using DDCore.Data;
-using DDCore.Domain;
+﻿using DDCore;
+using DDCore.Commands;
+using DDCore.DefaultProviders;
 using DDCore.Events;
-using Microsoft.Extensions.DependencyInjection;
+using DDCore.Events.Interfaces;
+using DDCore.Queries;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace DDCore
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -54,8 +53,9 @@ namespace DDCore
             services.TryAddScoped<IQueryDispatcher, Dispatcher>();
             services.TryAddScoped<IDomainEventDispatcher, Dispatcher>();
             services.TryAddScoped<IIntegrationEventDispatcher, Dispatcher>();
-            
+
             // Add the Integration Queue as Scoped
+            services.AddScoped<IIntegrationQueue, IntegrationQueue>();
             services.AddScoped<IntegrationQueue>();
         }
 

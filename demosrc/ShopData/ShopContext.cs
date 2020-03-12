@@ -1,7 +1,6 @@
-﻿using DDCore;
-using DDCore.Domain;
+﻿using DDCore.Domain;
+using DDCore.Events.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using ShopData.Configuration;
 using ShopData.ViewTypes;
 using ShopDomain.Catalog;
 using System.Linq;

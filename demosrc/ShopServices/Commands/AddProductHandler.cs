@@ -1,5 +1,5 @@
 ﻿using DDCore;
-using DDCore.Data;
+using DDCore.Commands;
 using ShopData;
 using ShopDomain.Catalog;
 using System;

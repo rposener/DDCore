@@ -1,11 +1,7 @@
-﻿using DDCore;
-using DDCore.Data;
+﻿using DDCore.Queries;
 using ShopData;
-using ShopDomain.Catalog;
 using ShopServices.DTOs;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ShopServices.Queries

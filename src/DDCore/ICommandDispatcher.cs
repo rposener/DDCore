@@ -1,4 +1,4 @@
-﻿using DDCore.Data;
+﻿using DDCore.Commands;
 using System.Threading.Tasks;
 
 namespace DDCore

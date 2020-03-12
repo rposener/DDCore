@@ -1,21 +1,25 @@
-﻿using DDCore.Data;
+﻿using DDCore.Commands;
 using DDCore.Events;
+using DDCore.Events.Interfaces;
+using DDCore.Queries;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace DDCore
+namespace DDCore.DefaultProviders
 {
     public class Dispatcher : ICommandDispatcher, IQueryDispatcher, IDomainEventDispatcher, IIntegrationEventDispatcher
     {
         private readonly IServiceProvider provider;
+        private readonly IntegrationQueue integrationQueue;
         private readonly ILogger<Dispatcher> logger;
 
-        public Dispatcher(IServiceProvider provider, ILogger<Dispatcher> logger)
+        public Dispatcher(IServiceProvider provider, IntegrationQueue integrationQueue, ILogger<Dispatcher> logger)
         {
             this.provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            this.integrationQueue = integrationQueue ?? throw new ArgumentNullException(nameof(integrationQueue));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -48,7 +52,8 @@ namespace DDCore
             sw.Stop();
             if (result.IsSuccess)
             {
-                logger.LogInformation("{0} successful execution took {1} using {2}.", commandName, sw.Elapsed, ((Type)handler.GetType()).Name);
+                logger.LogInformation("complete {0} execution took {1} using {2}.", commandName, sw.Elapsed, ((Type)handler.GetType()).Name);
+                await integrationQueue.DispatchAllAsync();
             }
             else
             {

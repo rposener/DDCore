@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DDCore.Data
+namespace DDCore.Queries
 {
     /// <summary>
     /// Decorator interface for IQuery Types

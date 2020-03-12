@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DDCore.Data
+namespace DDCore.Commands
 {
     /// <summary>
     /// Decorator interface for Commands

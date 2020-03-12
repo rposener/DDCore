@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DDCore.Domain;
 
-namespace DDCore.Data
+namespace DDCore.Queries
 {
     /// <summary>
     /// Decorator Interface to Identify Queries that return some type of <seealso cref="IQueryResult"/> which is not a <seealso cref="EntityObject"/> or <seealso cref="ValueObject"/>

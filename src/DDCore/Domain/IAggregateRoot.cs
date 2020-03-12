@@ -1,4 +1,4 @@
-﻿using DDCore.Data;
+﻿using DDCore.Commands;
 
 namespace DDCore.Domain
 {

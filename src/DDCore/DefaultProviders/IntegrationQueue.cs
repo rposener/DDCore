@@ -1,11 +1,12 @@
 ﻿using DDCore.Events;
+using DDCore.Events.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DDCore
+namespace DDCore.DefaultProviders
 {
-    public class IntegrationQueue
+    public class IntegrationQueue : IIntegrationQueue
     {
         private readonly ICollection<IIntegrationEvent> events;
         private readonly IIntegrationEventDispatcher dispatcher;

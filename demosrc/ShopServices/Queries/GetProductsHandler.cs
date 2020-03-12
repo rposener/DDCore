@@ -1,4 +1,4 @@
-﻿using DDCore.Data;
+﻿using DDCore.Queries;
 using Microsoft.EntityFrameworkCore;
 using ShopData;
 using ShopData.ViewTypes;
@@ -6,7 +6,6 @@ using ShopServices.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static ShopAppServices.GetProducts;
 

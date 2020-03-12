@@ -1,7 +1,6 @@
-﻿using DDCore.Data;
+﻿using DDCore.Queries;
 using ShopServices.DTOs;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ShopAppServices
 {
