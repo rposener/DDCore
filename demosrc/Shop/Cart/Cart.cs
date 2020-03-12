@@ -1,5 +1,6 @@
 ﻿using DDCore;
 using DDCore.Domain;
+using Shop.Cart;
 using ShopDomain.Catalog;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,7 @@ namespace ShopDomain.Cart
                 return _contents[_contents.IndexOf(cartResult.Value)].AdjustQuantity(quantity);
             }
             _contents.Add(cartResult.Value);
+            Events.Add(new ProductAddedToCart(CartIdentifier, cartResult.Value.ProductId, cartResult.Value.Quantity));
             return Result.Success();
         }
 

@@ -1,5 +1,6 @@
 ﻿using DDCore.Data;
 using DDCore.Domain;
+using DDCore.Events;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace DDCore
 {
-    public class Messages
+    public class Dispatcher : ICommandDispatcher, IQueryDispatcher, IDomainEventDispatcher, IIntegrationEventDispatcher
     {
         private readonly IServiceProvider provider;
-        private readonly ILogger<Messages> logger;
+        private readonly ILogger<Dispatcher> logger;
 
-        public Messages(IServiceProvider provider, ILogger<Messages> logger)
+        public Dispatcher(IServiceProvider provider, ILogger<Dispatcher> logger)
         {
             this.provider = provider ?? throw new ArgumentNullException(nameof(provider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -56,6 +57,66 @@ namespace DDCore
                 logger.LogError("{0} failed with error: {1}", commandName, result.Error);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Dispatches a Domain Event
+        /// Failures in Handlers will Throw
+        /// </summary>
+        /// <param name="domainEvent"></param>
+        /// <returns></returns>
+        public async Task DispatchAsync(IDomainEvent domainEvent)
+        {
+            var eventName = domainEvent.GetType().Name;
+            var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(domainEvent.GetType());
+            var handlersListType = typeof(IEnumerable<>).MakeGenericType(handlerType);
+            var handlers = (IEnumerable<dynamic>) provider.GetService(handlersListType);
+            foreach (var handler in handlers)
+            {
+                logger.LogDebug("Dispatching {0} event using {1}", eventName, ((Type)handler.GetType()).Name);
+                var sw = Stopwatch.StartNew();
+                Result result;
+                try
+                {
+                    result = await handler.HandleEventAsync((dynamic)domainEvent);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "{0} event failed", eventName);
+                    throw;
+                }
+                sw.Stop();
+            }
+        }
+
+
+        /// <summary>
+        /// Dispatches an Integration Event
+        /// Failures in Handlers are ignored
+        /// </summary>
+        /// <param name="integrationEvent"></param>
+        /// <returns></returns>
+        public async Task DispatchAsync(IIntegrationEvent integrationEvent)
+        {
+            var eventName = integrationEvent.GetType().Name;
+            var handlerType = typeof(IIntegrationEventHandler<>).MakeGenericType(integrationEvent.GetType());
+            var handlersListType = typeof(IEnumerable<>).MakeGenericType(handlerType);
+            var handlers = (IEnumerable<dynamic>)provider.GetService(handlersListType);
+            foreach (var handler in handlers)
+            {
+                logger.LogDebug("Starting {0} integration event using {1}", eventName, ((Type)handler.GetType()).Name);
+                var sw = Stopwatch.StartNew();
+                Result result;
+                try
+                {
+                    result = await handler.HandleEventAsync((dynamic)integrationEvent);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "{0} integration event failed", eventName);
+                }
+                sw.Stop();
+            }
         }
 
         /// <summary>

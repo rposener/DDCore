@@ -14,15 +14,15 @@ namespace DDCore.Tests
     public class MessagesTests
     {
         IServiceProvider provider;
-        ILogger<Messages> logger;
-        Messages messages;
+        ILogger<Dispatcher> logger;
+        Dispatcher messages;
 
         [TestInitialize]
         public void Setup()
         {
             provider = Mock.Of<IServiceProvider>();
-            logger = Mock.Of<ILogger<Messages>>();
-            messages = new Messages(provider, logger);
+            logger = Mock.Of<ILogger<Dispatcher>>();
+            messages = new Dispatcher(provider, logger);
         }
 
         [TestMethod]

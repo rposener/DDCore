@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DDCore.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,16 @@ namespace DDCore.Domain
     /// </summary>
     public abstract class EntityObject : IEquatable<EntityObject>
     {
+        /// <summary>
+        /// Events that this Entity has Raised
+        /// </summary>
+        public ICollection<IDomainEvent> Events { get; }
+
+        public EntityObject()
+        {
+            Events = new List<IDomainEvent>();
+        }
+
         /// <summary>
         /// Provided by Classes that implement EntityObject
         /// Must return properties that Identity the EntityObject

@@ -1,6 +1,8 @@
 ﻿using DDCore.Data;
 using DDCore.Domain;
+using DDCore.Events;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +33,27 @@ namespace DDCore
 
             services.Scan(scan => scan
                 .FromAssemblies(assemblies)
+                .AddClasses(classes => classes.Where(t => t.ClassImplementsGenericInterface((typeof(IDomainEventHandler<>)))), true)
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+            services.Scan(scan => scan
+                .FromAssemblies(assemblies)
+                .AddClasses(classes => classes.Where(t => t.ClassImplementsGenericInterface((typeof(IIntegrationEventHandler<>)))), true)
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+            services.Scan(scan => scan
+                .FromAssemblies(assemblies)
                 .AddClasses(classes => classes.Where(t =>t.ClassImplementsGenericInterface(typeof(IQueryHandler<,>))), true)
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
-            services.AddScoped<Messages>();
+            // Attempt to Add these if an implementation is not already provided
+            services.TryAddScoped<ICommandDispatcher, Dispatcher>();
+            services.TryAddScoped<IQueryDispatcher, Dispatcher>();
+            services.TryAddScoped<IDomainEventDispatcher, Dispatcher>();
+            services.TryAddScoped<IIntegrationEventDispatcher, Dispatcher>();
         }
 
         static bool ClassImplementsGenericInterface(this Type classType, Type interfaceType) 

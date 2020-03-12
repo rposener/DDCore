@@ -24,13 +24,15 @@ namespace ShopWeb.Controllers
     [Produces("application/json")]
     public class CatalogController : Controller
     {
-        private readonly Messages mesages;
+        private readonly ICommandDispatcher cmdDispatcher;
+        private readonly IQueryDispatcher queryDispatcher;
         private readonly ILogger<CatalogController> logger;
         private readonly IMapper mapper;
 
-        public CatalogController(Messages mesages, ILogger<CatalogController> logger, IMapper mapper)
+        public CatalogController(ICommandDispatcher cmdDispatcher, IQueryDispatcher queryDispatcher, ILogger<CatalogController> logger, IMapper mapper)
         {
-            this.mesages = mesages ?? throw new ArgumentNullException(nameof(mesages));
+            this.cmdDispatcher = cmdDispatcher ?? throw new ArgumentNullException(nameof(cmdDispatcher));
+            this.queryDispatcher = queryDispatcher ?? throw new ArgumentNullException(nameof(queryDispatcher));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
@@ -46,7 +48,7 @@ namespace ShopWeb.Controllers
         public async Task<ActionResult<IEnumerable<ProductSummaryDto>>> Get([FromQuery] int pageSize = 50, [FromQuery] int page = 1, [FromQuery]OrderProductsBy orderBy = OrderProductsBy.RatingDesc)
         {
             var ordering = mapper.Map<GetProducts.OrderBy>(orderBy);
-            var results = await mesages.DispatchAsync(new GetProducts(pageSize, ordering, page));
+            var results = await queryDispatcher.DispatchAsync(new GetProducts(pageSize, ordering, page));
             var dtos = mapper.Map<ProductSummaryDto>(results);
             return Ok(dtos);
         }
@@ -61,7 +63,7 @@ namespace ShopWeb.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(IDictionary<string, ICollection<string>>))]
         public async Task<ActionResult<int>> CreateProduct([FromBody] NewProductDto product)
         {
-            var result = await mesages.DispatchAsync(new AddProduct(product.Name, product.Description, product.Price));
+            var result = await cmdDispatcher.DispatchAsync(new AddProduct(product.Name, product.Description, product.Price));
             if (result)
             {
                 return Ok(result.Value);
@@ -78,7 +80,7 @@ namespace ShopWeb.Controllers
         [HttpGet("{productId}")]
         public async Task<ActionResult<ProductSummaryDto>> Get(long productId)
         {
-            var result = await mesages.DispatchAsync(new GetProduct(productId));
+            var result = await queryDispatcher.DispatchAsync(new GetProduct(productId));
             var dto = mapper.Map<ProductSummaryDto>(result);
             return Ok(dto);
         }
@@ -95,7 +97,7 @@ namespace ShopWeb.Controllers
         public async Task<ActionResult> Post(long productId, NewReviewDto review)
         {
             var reviewer = User.Identity.Name ?? "Unknown Reviewer";
-            var result = await mesages.DispatchAsync(new AddProductReview(productId, reviewer, review.Stars, review.ReviewText));
+            var result = await cmdDispatcher.DispatchAsync(new AddProductReview(productId, reviewer, review.Stars, review.ReviewText));
             if (result)
             {
                 return NoContent();
