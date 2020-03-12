@@ -90,7 +90,7 @@ namespace DDCore
 
         /// <summary>
         /// Dispatches an Integration Event
-        /// Failures in Handlers are ignored
+        /// Failures in Handlers are logged but ignored
         /// </summary>
         /// <param name="integrationEvent"></param>
         /// <returns></returns>

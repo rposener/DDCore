@@ -28,7 +28,8 @@ namespace DDCore
         /// <summary>
         /// Dispatches all events in the queue
         /// </summary>
-        /// <param name="runConcurrently"></param>
+        /// <param name="runConcurrently">Default is false 
+        /// if true all <seealso cref="IIntegrationEventHandler{T}"/>s will run concurrently.</param>
         /// <returns></returns>
         public async Task DispatchAllAsync(bool runConcurrently = false)
         {

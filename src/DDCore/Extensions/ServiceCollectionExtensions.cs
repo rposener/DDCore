@@ -54,6 +54,9 @@ namespace DDCore
             services.TryAddScoped<IQueryDispatcher, Dispatcher>();
             services.TryAddScoped<IDomainEventDispatcher, Dispatcher>();
             services.TryAddScoped<IIntegrationEventDispatcher, Dispatcher>();
+            
+            // Add the Integration Queue as Scoped
+            services.AddScoped<IntegrationQueue>();
         }
 
         static bool ClassImplementsGenericInterface(this Type classType, Type interfaceType) 
