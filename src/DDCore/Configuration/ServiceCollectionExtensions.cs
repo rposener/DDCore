@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"><seealso cref="IServiceCollection"/> to add Services to</param>
         /// <param name="assemblies">List of <seealso cref="Assembly"/>s to scan for <seealso cref="IRepository{T}"/>, <seealso cref="ICommandHandler{TCommand}"/> and <seealso cref="IQueryHandler{TQuery, TResult}"/> implementations</param>
-        public static void AddDDCore(this IServiceCollection services, params Assembly[] assemblies)
+        public static IServiceCollection AddDDCore(this IServiceCollection services, params Assembly[] assemblies)
         {
             // Add Configuration
             services.AddOptions<DDCoreOptions>();
@@ -62,6 +62,8 @@ namespace Microsoft.Extensions.DependencyInjection
             // Add the Integration Queue as Scoped
             services.AddScoped<IIntegrationQueue, IntegrationQueue>();
             services.AddScoped<IntegrationQueue>();
+
+            return services;
         }
 
         /// <summary>
@@ -69,9 +71,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">service collection with DDCore</param>
         /// <param name="config">configuration section</param>
-        public static void ConfigureDDCore(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection ConfigureDDCore(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<DDCoreOptions>(config.GetSection("Dispatcher"));
+            return services;
         }
 
         /// <summary>
@@ -79,9 +82,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">service collection with DDCore</param>
         /// <param name="config">action to configure DDCore</param>
-        public static void ConfigureDDCore(this IServiceCollection services, Action<DDCoreOptions> config)
+        public static IServiceCollection ConfigureDDCore(this IServiceCollection services, Action<DDCoreOptions> config)
         {
             services.Configure(config);
+            return services;
         }
 
         private static bool ClassImplementsGenericInterface(this Type classType, Type interfaceType) 
