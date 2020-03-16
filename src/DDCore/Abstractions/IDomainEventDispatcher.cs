@@ -1,7 +1,7 @@
-﻿using DDCore.Events;
+﻿using DDCore.Domain;
 using System.Threading.Tasks;
 
-namespace DDCore.Events.Interfaces
+namespace DDCore.Abstractions
 {
     public interface IDomainEventDispatcher
     {

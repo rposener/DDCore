@@ -1,6 +1,4 @@
-﻿using DDCore.Commands;
-
-namespace DDCore.Domain
+﻿namespace DDCore.Domain
 {
     /// <summary>
     /// Decorator Interface to Identify Aggregate Roots. 

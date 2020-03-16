@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DDCore.Queries
+﻿namespace DDCore.Queries
 {
     /// <summary>
     /// Decorator interface for IQuery Types

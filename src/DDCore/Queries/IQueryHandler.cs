@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DDCore.Domain;
 using System.Threading.Tasks;
-using DDCore.Domain;
 
 namespace DDCore.Queries
 {

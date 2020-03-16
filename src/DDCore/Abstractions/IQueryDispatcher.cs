@@ -1,7 +1,7 @@
 ﻿using DDCore.Queries;
 using System.Threading.Tasks;
 
-namespace DDCore
+namespace DDCore.Abstractions
 {
     public interface IQueryDispatcher
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DDCore.Events
+﻿namespace DDCore.IntegrationEvents
 {
     /// <summary>
     /// Decorator Interface for Integration Events

@@ -1,8 +1,6 @@
-﻿using Shop.Cart;
+﻿using DDCore.Domain;
+using Shop.Cart;
 using ShopData;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DDCore.Events

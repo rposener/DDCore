@@ -1,9 +1,8 @@
-﻿using DDCore.Events;
-using System;
+﻿using DDCore.IntegrationEvents;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
-namespace DDCore
+namespace DDCore.Abstractions
 {
     public interface IIntegrationQueue
     {
@@ -13,5 +12,10 @@ namespace DDCore
         /// </summary>
         /// <param name="event">Integration Event to Dispatch</param>
         void QueueEvent(IIntegrationEvent @event);
+
+        /// <summary>
+        /// Returns all Queued Integration Events
+        /// </summary>
+        IReadOnlyCollection<IIntegrationEvent> IntegrationEvents { get; }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DDCore.Events
+﻿namespace DDCore.Domain
 {
     /// <summary>
     /// Decorator Interface of Domain Events

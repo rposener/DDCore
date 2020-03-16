@@ -1,9 +1,11 @@
-﻿using DDCore;
+﻿using DDCore.Abstractions;
 using DDCore.Commands;
+using DDCore.Configuration;
 using DDCore.DefaultProviders;
-using DDCore.Events;
-using DDCore.Events.Interfaces;
+using DDCore.Domain;
+using DDCore.IntegrationEvents;
 using DDCore.Queries;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Reflection;
@@ -19,6 +21,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="assemblies">List of <seealso cref="Assembly"/>s to scan for <seealso cref="IRepository{T}"/>, <seealso cref="ICommandHandler{TCommand}"/> and <seealso cref="IQueryHandler{TQuery, TResult}"/> implementations</param>
         public static void AddDDCore(this IServiceCollection services, params Assembly[] assemblies)
         {
+            // Add Configuration
+            services.AddOptions<DDCoreOptions>();
+
             if (assemblies == null || assemblies.Length == 0)
             {
                 throw new Exception("Call to DDDCore() did not specify any Assemblies.");
@@ -59,7 +64,27 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IntegrationQueue>();
         }
 
-        static bool ClassImplementsGenericInterface(this Type classType, Type interfaceType) 
+        /// <summary>
+        /// Configures DDCore from an IConfiguration provided
+        /// </summary>
+        /// <param name="services">service collection with DDCore</param>
+        /// <param name="config">configuration section</param>
+        public static void ConfigureDDCore(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<DDCoreOptions>(config.GetSection("Dispatcher"));
+        }
+
+        /// <summary>
+        /// Configured DDCore from an action
+        /// </summary>
+        /// <param name="services">service collection with DDCore</param>
+        /// <param name="config">action to configure DDCore</param>
+        public static void ConfigureDDCore(this IServiceCollection services, Action<DDCoreOptions> config)
+        {
+            services.Configure(config);
+        }
+
+        private static bool ClassImplementsGenericInterface(this Type classType, Type interfaceType) 
         {
             var interfacesImplemented = classType.GetInterfaces();
             foreach (var inter in interfacesImplemented)

@@ -1,7 +1,4 @@
-﻿using DDCore.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DDCore.Domain;
 
 namespace Shop.Cart
 {

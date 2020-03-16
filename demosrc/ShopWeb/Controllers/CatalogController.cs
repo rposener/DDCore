@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
-using DDCore;
-using Microsoft.AspNetCore.Http;
+using DDCore.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop.Commands;
 using ShopAppServices;
 using ShopServices.Commands;
-using ShopServices.DTOs;
 using ShopServices.Queries;
 using ShopWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

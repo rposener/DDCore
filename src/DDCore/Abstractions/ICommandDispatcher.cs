@@ -1,7 +1,7 @@
 ﻿using DDCore.Commands;
 using System.Threading.Tasks;
 
-namespace DDCore
+namespace DDCore.Abstractions
 {
     public interface ICommandDispatcher
     {

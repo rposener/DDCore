@@ -1,5 +1,5 @@
-﻿using DDCore.Domain;
-using DDCore.Events.Interfaces;
+﻿using DDCore.Abstractions;
+using DDCore.Domain;
 using Microsoft.EntityFrameworkCore;
 using ShopData.ViewTypes;
 using ShopDomain.Catalog;

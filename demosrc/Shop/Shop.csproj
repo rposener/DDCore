@@ -8,9 +8,5 @@
     <ProjectReference Include="..\..\src\DDCore\DDCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.2" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-  </ItemGroup>
 
 </Project>

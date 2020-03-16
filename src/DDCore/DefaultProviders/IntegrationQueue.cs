@@ -1,5 +1,5 @@
-﻿using DDCore.Events;
-using DDCore.Events.Interfaces;
+﻿using DDCore.Abstractions;
+using DDCore.IntegrationEvents;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,13 +8,22 @@ namespace DDCore.DefaultProviders
 {
     public class IntegrationQueue : IIntegrationQueue
     {
-        private readonly ICollection<IIntegrationEvent> events;
-        private readonly IIntegrationEventDispatcher dispatcher;
+        private readonly List<IIntegrationEvent> events;
 
-        public IntegrationQueue(IIntegrationEventDispatcher dispatcher)
+        /// <summary>
+        /// List of Integration Events that were Queued
+        /// </summary>
+        public IReadOnlyCollection<IIntegrationEvent> IntegrationEvents
+        {
+            get
+            {
+                return events.AsReadOnly();
+            }
+        }
+
+        public IntegrationQueue()
         {
             this.events = new List<IIntegrationEvent>();
-            this.dispatcher = dispatcher;
         }
 
         /// <summary>
@@ -26,25 +35,5 @@ namespace DDCore.DefaultProviders
             events.Add(@event);
         }
 
-        /// <summary>
-        /// Dispatches all events in the queue
-        /// </summary>
-        /// <param name="runConcurrently">Default is false 
-        /// if true all <seealso cref="IIntegrationEventHandler{T}"/>s will run concurrently.</param>
-        /// <returns></returns>
-        public async Task DispatchAllAsync(bool runConcurrently = false)
-        {
-            if (runConcurrently)
-            {
-                await Task.WhenAll(events.Select(ev => dispatcher.DispatchAsync(ev)));
-            }
-            else
-            {
-                foreach(var ev in events)
-                {
-                    await dispatcher.DispatchAsync(ev);
-                }
-            }
-        }
     }
 }

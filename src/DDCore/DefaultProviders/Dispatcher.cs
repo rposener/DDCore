@@ -1,11 +1,15 @@
-﻿using DDCore.Commands;
-using DDCore.Events;
-using DDCore.Events.Interfaces;
+﻿using DDCore.Abstractions;
+using DDCore.Commands;
+using DDCore.Configuration;
+using DDCore.Domain;
+using DDCore.IntegrationEvents;
 using DDCore.Queries;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DDCore.DefaultProviders
@@ -13,14 +17,16 @@ namespace DDCore.DefaultProviders
     public class Dispatcher : ICommandDispatcher, IQueryDispatcher, IDomainEventDispatcher, IIntegrationEventDispatcher
     {
         private readonly IServiceProvider provider;
-        private readonly IntegrationQueue integrationQueue;
+        private readonly IIntegrationQueue integrationQueue;
         private readonly ILogger<Dispatcher> logger;
+        private readonly DDCoreOptions options;
 
-        public Dispatcher(IServiceProvider provider, IntegrationQueue integrationQueue, ILogger<Dispatcher> logger)
+        public Dispatcher(IServiceProvider provider, IIntegrationQueue integrationQueue, ILogger<Dispatcher> logger, IOptions<DDCoreOptions> options)
         {
             this.provider = provider ?? throw new ArgumentNullException(nameof(provider));
             this.integrationQueue = integrationQueue ?? throw new ArgumentNullException(nameof(integrationQueue));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         }
 
         /// <summary>
@@ -53,7 +59,14 @@ namespace DDCore.DefaultProviders
             if (result.IsSuccess)
             {
                 logger.LogInformation("complete {0} execution took {1} using {2}.", commandName, sw.Elapsed, ((Type)handler.GetType()).Name);
-                await integrationQueue.DispatchAllAsync();
+                if (options.DispatchIntegrationEventsOnSuccessfulCommand)
+                {
+                    logger.LogInformation("starting integration events for {0}.", commandName);
+                    sw.Restart();
+                    await DispatchAllIntegrationEventsAsync();
+                    sw.Stop();
+                    logger.LogInformation("integration events for {0} took {1}.", commandName, sw.Elapsed);
+                }
             }
             else
             {
@@ -89,6 +102,32 @@ namespace DDCore.DefaultProviders
                     throw;
                 }
                 sw.Stop();
+            }
+        }
+
+
+        /// <summary>
+        /// Dispatches all events in the queue
+        /// </summary>
+        /// <param name="runConcurrently">Default is false 
+        /// if true all <seealso cref="IIntegrationEventHandler{T}"/>s will run concurrently.</param>
+        /// <returns></returns>
+        public async Task DispatchAllIntegrationEventsAsync()
+        {
+            // Validate we have any Integration Events
+            if (!(integrationQueue.IntegrationEvents?.Any() ?? false))
+                return;
+
+            if (options.DispatchIntegrationsConcurrently)
+            {
+                await Task.WhenAll(integrationQueue.IntegrationEvents.Select(ev => DispatchAsync(ev)));
+            }
+            else
+            {
+                foreach (var ev in integrationQueue.IntegrationEvents)
+                {
+                    await DispatchAsync(ev);
+                }
             }
         }
 

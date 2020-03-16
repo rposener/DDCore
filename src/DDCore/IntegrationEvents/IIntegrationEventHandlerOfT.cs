@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace DDCore.Events
+namespace DDCore.IntegrationEvents
 {
     /// <summary>
     /// Handler for an Integration Event.  Integration Events occur after successful persistence.
