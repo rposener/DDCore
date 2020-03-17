@@ -1,12 +1,9 @@
 ﻿using DDCore.Domain;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ShopDomain.Common
 {
-    [Owned]
     public class PhoneNumber : ValueObject
     {
         private string _countryCode;
