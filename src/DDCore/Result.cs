@@ -119,6 +119,16 @@ namespace DDCore
             return new Result(false, errorMessage, failedResults.Select(r => r.Error).ToArray());
         }
 
+        /// <summary>
+        /// Return a Result as a Specific Type of Result
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public Result<T> As<T>()
+        {
+            return new Result<T>(IsSuccess, Error, Value);
+        }
+
         protected override IEnumerable<IComparable> GetEqualityComponents()
         {
             yield return IsSuccess;
