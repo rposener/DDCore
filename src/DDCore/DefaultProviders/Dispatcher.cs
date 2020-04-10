@@ -38,46 +38,41 @@ namespace DDCore.DefaultProviders
         {
             var commandName = command.GetType().Name;
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
-            var handlersListType = typeof(IEnumerable<>).MakeGenericType(handlerType);
-            var handlers = (IEnumerable<dynamic>)provider.GetService(handlersListType);
-            List<Result> handlerResults = new List<Result>();
-            foreach (var handler in handlers)
+            var handler = (dynamic)provider.GetService(handlerType);
+            if (handler == null)
             {
-                if (handler == null)
+                logger.LogError("The Command Handler {0} could not be resolved.", handlerType.FullName);
+            }
+            logger.LogDebug("{0} starting execution using {1}", commandName, ((Type)handler.GetType()).Name);
+            var sw = Stopwatch.StartNew();
+            Result result;
+            try
+            {
+                result = await handler.HandleAsync((dynamic)command);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "{0} failed to execute", commandName);
+                throw;
+            }
+            sw.Stop();
+            if (result.IsSuccess)
+            {
+                logger.LogInformation("complete {0} execution took {1} using {2}.", commandName, sw.Elapsed, ((Type)handler.GetType()).Name);
+                if (options.DispatchIntegrationEventsOnSuccessfulCommand)
                 {
-                    logger.LogError("The Command Handler {0} could not be resolved.", handlerType.FullName);
-                }
-                logger.LogDebug("{0} starting execution using {1}", commandName, ((Type)handler.GetType()).Name);
-                var sw = Stopwatch.StartNew();
-                Result result;
-                try
-                {
-                    result = await handler.HandleAsync((dynamic)command);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "{0} failed to execute", commandName);
-                    throw;
-                }
-                sw.Stop();
-                if (result.IsSuccess)
-                {
-                    logger.LogInformation("complete {0} execution took {1} using {2}.", commandName, sw.Elapsed, ((Type)handler.GetType()).Name);
-                    if (options.DispatchIntegrationEventsOnSuccessfulCommand)
-                    {
-                        logger.LogInformation("starting integration events for {0}.", commandName);
-                        sw.Restart();
-                        await DispatchAllIntegrationEventsAsync();
-                        sw.Stop();
-                        logger.LogInformation("integration events for {0} took {1}.", commandName, sw.Elapsed);
-                    }
-                }
-                else
-                {
-                    logger.LogError("{0} failed with error: {1}", commandName, result.Error);
+                    logger.LogInformation("starting integration events for {0}.", commandName);
+                    sw.Restart();
+                    await DispatchAllIntegrationEventsAsync();
+                    sw.Stop();
+                    logger.LogInformation("integration events for {0} took {1}.", commandName, sw.Elapsed);
                 }
             }
-            return Result.Combine(handlerResults);
+            else
+            {
+                logger.LogError("{0} failed with error: {1}", commandName, result.Error);
+            }
+            return result;
         }
 
         /// <summary>
@@ -91,7 +86,7 @@ namespace DDCore.DefaultProviders
             var eventName = domainEvent.GetType().Name;
             var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(domainEvent.GetType());
             var handlersListType = typeof(IEnumerable<>).MakeGenericType(handlerType);
-            var handlers = (IEnumerable<dynamic>) provider.GetService(handlersListType);
+            var handlers = (IEnumerable<dynamic>)provider.GetService(handlersListType);
             foreach (var handler in handlers)
             {
                 logger.LogDebug("Dispatching {0} event using {1}", eventName, ((Type)handler.GetType()).Name);
@@ -186,8 +181,8 @@ namespace DDCore.DefaultProviders
             try
             {
                 result = await handler.ExecuteAsync((dynamic)query);
-            } 
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 logger.LogError(ex, "{0} failed to execute", queryName);
                 throw;

@@ -36,14 +36,14 @@ namespace DDCore.Tests
         {
             // Setup
             var handler = Mock.Of<ICommandHandler<CmdA>>();
-            Mock.Get(provider).Setup(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>))).Returns(new[] { handler });
+            Mock.Get(provider).Setup(p => p.GetService(typeof(ICommandHandler<CmdA>))).Returns(handler);
             Mock.Get(handler).Setup(h => h.HandleAsync(It.IsAny<CmdA>())).ReturnsAsync(Result.Success());
 
             // Test
             await dispatcher.DispatchAsync(new CmdA());
 
             // Asserts
-            Mock.Get(provider).Verify(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>)), Times.Once());
+            Mock.Get(provider).Verify(p => p.GetService(typeof(ICommandHandler<CmdA>)), Times.Once());
             Mock.Get(handler).Verify(h => h.HandleAsync(It.IsAny<CmdA>()), Times.Once());
         }
 
@@ -52,14 +52,14 @@ namespace DDCore.Tests
         {
             // Setup
             var handler = Mock.Of<ICommandHandler<CmdA>>();
-            Mock.Get(provider).Setup(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>))).Returns(new[] { handler });
+            Mock.Get(provider).Setup(p => p.GetService(typeof(ICommandHandler<CmdA>))).Returns(handler);
             Mock.Get(handler).Setup(h => h.HandleAsync(It.IsAny<CmdA>())).ReturnsAsync(Result.Failure("AA==failed"));
 
             // Test
             await dispatcher.DispatchAsync(new CmdA());
 
             // Asserts
-            Mock.Get(provider).Verify(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>)), Times.Once());
+            Mock.Get(provider).Verify(p => p.GetService(typeof(ICommandHandler<CmdA>)), Times.Once());
             Mock.Get(handler).Verify(h => h.HandleAsync(It.IsAny<CmdA>()), Times.Once());
         }
 
@@ -68,17 +68,17 @@ namespace DDCore.Tests
         {
             // Setup
             var handler = Mock.Of<ICommandHandler<CmdA>>();
-            Mock.Get(provider).Setup(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>))).Returns(new[] { handler });
+            Mock.Get(provider).Setup(p => p.GetService(typeof(ICommandHandler<CmdA>))).Returns(handler);
             Mock.Get(handler).Setup(h => h.HandleAsync(It.IsAny<CmdA>())).ThrowsAsync(new ArgumentOutOfRangeException());
 
             // Test
             await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () =>
-           {
-               await dispatcher.DispatchAsync(new CmdA());
-           }, "Did not throw exception");
+            {
+                await dispatcher.DispatchAsync(new CmdA());
+            }, "Did not throw exception");
 
             // Asserts
-            Mock.Get(provider).Verify(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>)), Times.Once());
+            Mock.Get(provider).Verify(p => p.GetService(typeof(ICommandHandler<CmdA>)), Times.Once());
             Mock.Get(handler).Verify(h => h.HandleAsync(It.IsAny<CmdA>()), Times.Once());
         }
 
@@ -128,7 +128,7 @@ namespace DDCore.Tests
         {
             // Setup
             var handler = Mock.Of<ICommandHandler<CmdA>>();
-            Mock.Get(provider).Setup(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>))).Returns(new[] { handler });
+            Mock.Get(provider).Setup(p => p.GetService(typeof(ICommandHandler<CmdA>))).Returns(handler);
             Mock.Get(handler).Setup(h => h.HandleAsync(It.IsAny<CmdA>())).ReturnsAsync(Result.Success());
 
             var list = new List<IIntegrationEvent>();
@@ -156,7 +156,7 @@ namespace DDCore.Tests
         {
             // Setup
             var handler = Mock.Of<ICommandHandler<CmdA>>();
-            Mock.Get(provider).Setup(p => p.GetService(typeof(IEnumerable<ICommandHandler<CmdA>>))).Returns(new[] { handler });
+            Mock.Get(provider).Setup(p => p.GetService(typeof(ICommandHandler<CmdA>))).Returns(handler);
             Mock.Get(handler).Setup(h => h.HandleAsync(It.IsAny<CmdA>())).ReturnsAsync(Result.Success());
             var list = new List<IIntegrationEvent>();
             list.Add(new ThrowingIntegrationEvent());
@@ -189,10 +189,10 @@ namespace DDCore.Tests
 
         public class ThrowingIntegrationEvent : IIntegrationEvent { }
 
-        public class CmdA:ICommand { }
+        public class CmdA : ICommand { }
 
         public class ResultB { }
 
-        public class QueryB: IQuery<ResultB> { }
+        public class QueryB : IQuery<ResultB> { }
     }
 }
